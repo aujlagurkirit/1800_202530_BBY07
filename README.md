@@ -60,8 +60,13 @@ elmo-hikes/
 
 ## Contributors
 - **Gurkirit Aujla** - BCIT CST Student. Adding my intro for the Git Conflict Resolution and Pitch Lab.
+<<<<<<< HEAD
 - **Ray Lee** - BCIT CST Student that loves learning and working in a group. A fun fact about me is that I will never give up unless it logically doesn't make sense to keep on going.
 - **Jade Ramirez** - BCIT CST Student, loves to learn new concepts and ideas. Loves to try and learn code for other projects outside of school.
+=======
+- **Ray Lee** - BCIT CST Student that loves learning and working in a group. A fun fact about me is that I will never give up unless it logically doesn't make sense to keep on going or the purpose is lost.
+- **Jade Ramirez** - BCIT CST Student, loves to learn new concepts and ideas. Doing his best at school while managing his outside life.
+>>>>>>> main
 ---
 
 
