@@ -59,7 +59,7 @@ elmo-hikes/
 
 
 ## Contributors
-- **Gurkirit Aujla** - BCIT CST Student. Adding my intro for the Git Conflict Resolution and Pitch Lab.
+- **Gurkirit Aujla** - BCIT CST Student. I really like to code as I am coding since 5 years and I have basic understaning of HTML, CSS and a little bit of Java. I have made websites using these coding languages
 - **Ray Lee** - BCIT CST Student that loves learning and working in a group. A fun fact about me is that I will never give up unless it logically doesn't make sense to keep on going.
 - **Jade Ramirez** - BCIT CST Student, loves to learn new concepts and ideas. Doing his best at school while managing his outside life.
 ---
