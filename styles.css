@@ -1,6 +1,6 @@
 /* Navbar styles */
 .navbar {
-  background-color: #1E3A8A; /* Dark Blue */
+  background-color: #1e3a8a; /* Dark Blue */
   padding: 15px 0;
   font-family: Arial, sans-serif;
 }
@@ -15,7 +15,7 @@
 }
 
 .brand {
-  color: #F3F4F6; /* Off-white */
+  color: #f3f4f6; /* Off-white */
   font-size: 28px;
   font-weight: bold;
   text-decoration: none;
@@ -23,11 +23,11 @@
 }
 
 .brand:hover {
-  color: #A5B4FC; /* Light blue on hover */
+  color: #a5b4fc; /* Light blue on hover */
 }
 
 .nav-links a {
-  color: #D1D5DB; /* Light Grey */
+  color: #d1d5db; /* Light Grey */
   margin-left: 20px;
   text-decoration: none;
   font-size: 16px;
@@ -35,10 +35,46 @@
 }
 
 .nav-links a:hover {
-  color: #A5B4FC; /* Light blue on hover */
+  color: #a5b4fc; /* Light blue on hover */
 }
 
-html, body {
+/* Reset default margins */
+html,
+body {
   margin: 0;
   padding: 0;
+}
+
+/* Welcome Banner */
+.welcome-banner {
+  background-color: #f3f4f6; /* Light grey */
+  text-align: center;
+  padding: 100px 20px;
+  font-family: Arial, sans-serif;
+}
+
+.welcome-banner h1 {
+  font-size: 48px;
+  color: #1e3a8a; /* Dark Blue */
+  margin-bottom: 20px;
+}
+
+.welcome-banner p {
+  font-size: 20px;
+  color: #374151; /* Dark grey */
+  margin-bottom: 30px;
+}
+
+.btn {
+  background-color: #1e3a8a; /* Dark Blue */
+  color: #f3f4f6; /* Off-white */
+  padding: 15px 30px;
+  text-decoration: none;
+  font-size: 18px;
+  border-radius: 8px;
+  transition: background-color 0.3s ease;
+}
+
+.btn:hover {
+  background-color: #3b82f6; /* Light Blue */
 }
