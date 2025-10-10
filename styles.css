@@ -78,3 +78,30 @@ body {
 .btn:hover {
   background-color: #3b82f6; /* Light Blue */
 }
+
+/* Footer */
+.footer {
+  background-color: #1e3a8a; /* Matches navbar dark blue */
+  color: #f3f4f6; /* Off-white text */
+  text-align: center;
+  padding: 20px 0;
+  font-family: Arial, sans-serif;
+  font-size: 0.95em;
+  width: 100%;
+}
+
+.footer-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.footer strong {
+  color: #a5b4fc; /* Light blue */
+}
+
+.footer p {
+  margin: 0;
+  line-height: 1.6;
+  letter-spacing: 0.3px;
+}
