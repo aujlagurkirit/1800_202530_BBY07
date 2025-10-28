@@ -38,11 +38,22 @@
   color: #a5b4fc; /* Light blue on hover */
 }
 
-/* Reset default margins */
-html,
-body {
+/* Reset default margins and setup for sticky footer */
+html, body {
+  height: 100%;
   margin: 0;
   padding: 0;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* Main content grows to fill available space */
+main, section {
+  flex: 1;
 }
 
 /* Welcome Banner */
@@ -104,4 +115,197 @@ body {
   margin: 0;
   line-height: 1.6;
   letter-spacing: 0.3px;
+}
+
+/* Slide-out settings tab container */
+#settings-tab-container {
+  position: fixed;
+  top: 50%;
+  left: 0;
+  transform: translateY(-50%);
+  z-index: 1001;
+  display: flex;
+  align-items: center;
+  transition: width 0.3s ease;
+  width: 40px; /* Initial width showing only hamburger */
+  overflow: visible;
+  background-color: transparent;
+  cursor: pointer;
+}
+
+/* When hovered, expand the width and show background */
+#settings-tab-container:hover {
+  width: 160px;
+  background-color: #1e3a8a; /* Dark blue background */
+  border-radius: 0 8px 8px 0;
+  box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Hamburger icon */
+#settings-hamburger {
+  color: #1e3a8a;
+  font-size: 28px;
+  padding: 8px 10px;
+  background: white;
+  border-radius: 0 8px 8px 0;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  flex-shrink: 0;
+  user-select: none;
+}
+
+/* Change hamburger style on hover */
+#settings-tab-container:hover #settings-hamburger {
+  background: transparent;
+  color: #f3f4f6; /* Off-white */
+}
+
+/* Slide-out "Settings" link */
+#settings-slideout {
+  color: #f3f4f6;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 16px;
+  padding: 10px 15px;
+  white-space: nowrap;
+  opacity: 0;
+  transition: opacity 0.3s ease 0.15s;
+  pointer-events: none;
+  user-select: none;
+}
+
+/* Show link on hover */
+#settings-tab-container:hover #settings-slideout {
+  opacity: 1;
+  pointer-events: auto;
+  user-select: auto;
+}
+
+/* Settings page container */
+.settings-container {
+  max-width: 500px;
+  margin: 60px auto;
+  background: white;
+  padding: 30px 25px;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  font-family: Arial, sans-serif;
+  color: #1e3a8a;
+}
+
+/* Settings page heading */
+.settings-container h2 {
+  font-size: 32px;
+  margin-bottom: 25px;
+  text-align: center;
+  font-weight: bold;
+}
+
+/* Each individual setting row */
+.setting-item {
+  margin-bottom: 25px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Labels in settings */
+.setting-item label {
+  font-weight: 600;
+  font-size: 18px;
+}
+
+/* Toggle switch container */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 50px;
+  height: 26px;
+}
+
+/* Hide default checkbox */
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* Slider styling */
+.switch .slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-color: #ccc;
+  transition: 0.4s;
+  border-radius: 26px;
+}
+
+/* Circular knob inside slider */
+.switch .slider:before {
+  position: absolute;
+  content: "";
+  height: 22px;
+  width: 22px;
+  left: 2px;
+  bottom: 2px;
+  background-color: white;
+  transition: 0.4s;
+  border-radius: 50%;
+}
+
+/* Checked state changes slider background */
+.switch input:checked + .slider {
+  background-color: #1e3a8a;
+}
+
+/* Move knob when checked */
+.switch input:checked + .slider:before {
+  transform: translateX(24px);
+}
+
+/* Buttons on settings page */
+.settings-container button {
+  width: 100%;
+  padding: 14px;
+  font-size: 18px;
+  background-color: #1e3a8a;
+  border-radius: 8px;
+  border: none;
+  color: #f3f4f6;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.settings-container button:hover {
+  background-color: #3b82f6;
+}
+
+/* Status message below buttons */
+#status-message {
+  text-align: center;
+  font-weight: 600;
+  color: #1e3a8a;
+  min-height: 24px;
+}
+
+.back-home-link {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background-color: #1e3a8a; /* Dark Blue */
+  color: #f3f4f6; /* Off-white */
+  padding: 10px 15px;
+  border-radius: 8px;
+  font-weight: 600;
+  text-decoration: none;
+  font-size: 14px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  transition: background-color 0.3s ease;
+  z-index: 1000;
+}
+
+.back-home-link:hover {
+  background-color: #3b82f6; /* Light Blue */
+  text-decoration: none;
 }

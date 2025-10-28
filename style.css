@@ -1,0 +1,137 @@
+/* Body and container */
+body {
+  background-color: #f3f4f6; /* light grey */
+  font-family: Arial, sans-serif;
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 30px 15px;
+}
+
+/* Container for form */
+.auth-container {
+  background-color: white;
+  padding: 40px 35px;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 400px;
+  box-sizing: border-box;
+  color: #1e3a8a;
+}
+
+/* Heading */
+h2 {
+  font-size: 32px;
+  margin-bottom: 25px;
+  text-align: center;
+  font-weight: bold;
+}
+
+/* Labels */
+label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 8px;
+  margin-top: 20px;
+}
+
+/* Inputs */
+input[type="email"],
+input[type="password"] {
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: 6px;
+  border: 2px solid #1e3a8a;
+  font-size: 16px;
+  box-sizing: border-box;
+  transition: border-color 0.3s ease;
+}
+
+input[type="email"]:focus,
+input[type="password"]:focus {
+  outline: none;
+  border-color: #3b82f6;
+}
+
+/* Submit button */
+button {
+  width: 100%;
+  margin-top: 30px;
+  padding: 14px;
+  font-size: 18px;
+  background-color: #1e3a8a;
+  border-radius: 8px;
+  border: none;
+  color: #f3f4f6;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  font-weight: bold;
+}
+
+button:hover {
+  background-color: #3b82f6;
+}
+
+/* Links container */
+.links {
+  margin-top: 25px;
+  text-align: center;
+  font-size: 15px;
+}
+
+.links a {
+  color: #1e3a8a;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.links a:hover {
+  color: #3b82f6;
+  text-decoration: underline;
+}
+
+/* Messages below forms */
+#message,
+#signup-message,
+#reset-message {
+  margin-top: 15px;
+  min-height: 22px;
+  text-align: center;
+  font-weight: 600;
+  color: #d14343; /* Clear red for errors */
+  font-size: 14px;
+}
+
+/* Forgot Password heading */
+h3 {
+  margin-top: 40px;
+  font-size: 20px;
+  font-weight: bold;
+  color: #1e3a8a;
+  text-align: center;
+}
+
+/* Back to Home link - fixed top-right */
+.back-home-link {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background-color: #1e3a8a; /* Dark Blue */
+  color: #f3f4f6; /* Off-white */
+  padding: 10px 15px;
+  border-radius: 8px;
+  font-weight: 600;
+  text-decoration: none;
+  font-size: 14px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  transition: background-color 0.3s ease;
+  z-index: 1000;
+}
+
+.back-home-link:hover {
+  background-color: #3b82f6; /* Light Blue */
+  text-decoration: none;
+}
