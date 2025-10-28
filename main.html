@@ -1,44 +1,69 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>LostNFound - Main</title>
-  <link rel="stylesheet" href="styles.css" />
-</head>
-<body>
-  <!-- Navbar -->
-  <nav class="navbar">
-    <div class="container">
-      <a href="main.html" class="brand">LostNFound</a>
-      <div class="nav-links">
-        <a href="main.html">Home</a>
-        <button id="logout-btn" style="background:none; border:none; color:#d1d5db; cursor:pointer; font-size:16px; margin-left:20px;">
-          Logout
-        </button>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>LostNFound - Main</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <!-- Navbar -->
+    <nav class="navbar">
+      <div class="container">
+        <a href="main.html" class="brand">LostNFound</a>
+        <div class="nav-links">
+          <a href="main.html">Home</a>
+          <a
+            href="search.html"
+            style="margin-left: 20px; color: #d1d5db; text-decoration: none"
+            >Search</a
+          >
+          <button
+            id="logout-btn"
+            style="
+              background: none;
+              border: none;
+              color: #d1d5db;
+              cursor: pointer;
+              font-size: 16px;
+              margin-left: 20px;
+            "
+          >
+            Logout
+          </button>
+        </div>
       </div>
+    </nav>
+
+    <!-- Slide-out settings tab -->
+    <div id="settings-tab-container">
+      <div id="settings-hamburger">&#9776;</div>
+      <!-- Hamburger icon -->
+      <a href="settings.html" id="settings-slideout">Settings</a>
     </div>
-  </nav>
 
-  <!-- Slide-out settings tab -->
-  <div id="settings-tab-container">
-    <div id="settings-hamburger">&#9776;</div> <!-- Hamburger icon -->
-    <a href="settings.html" id="settings-slideout">Settings</a>
-  </div>
+    <!-- Main Content -->
+    <section
+      style="
+        padding: 40px 20px;
+        font-family: Arial, sans-serif;
+        max-width: 800px;
+        margin: 0 auto;
+      "
+    >
+      <h1>Welcome to your Dashboard!</h1>
+      <p>
+        This is the main page where you can manage your lost and found items.
+      </p>
+    </section>
 
-  <!-- Main Content -->
-  <section style="padding: 40px 20px; font-family: Arial, sans-serif; max-width: 800px; margin: 0 auto;">
-    <h1>Welcome to your Dashboard!</h1>
-    <p>This is the main page where you can manage your lost and found items.</p>
-  </section>
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="footer-container">
+        <p>LostNFound &copy; 2025 — made by Gurkirit, Jade, and Ray</p>
+      </div>
+    </footer>
 
-  <!-- Footer -->
-  <footer class="footer">
-    <div class="footer-container">
-      <p>LostNFound &copy; 2025 — made by Gurkirit, Jade, and Ray</p>
-    </div>
-  </footer>
-
-  <script type="module" src="src/main.js"></script>
-</body>
+    <script type="module" src="src/main.js"></script>
+  </body>
 </html>

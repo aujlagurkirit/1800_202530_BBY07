@@ -39,7 +39,8 @@
 }
 
 /* Reset default margins and setup for sticky footer */
-html, body {
+html,
+body {
   height: 100%;
   margin: 0;
   padding: 0;
@@ -52,7 +53,8 @@ body {
 }
 
 /* Main content grows to fill available space */
-main, section {
+main,
+section {
   flex: 1;
 }
 
@@ -187,7 +189,7 @@ main, section {
   background: white;
   padding: 30px 25px;
   border-radius: 12px;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
   font-family: Arial, sans-serif;
   color: #1e3a8a;
 }
@@ -233,7 +235,10 @@ main, section {
 .switch .slider {
   position: absolute;
   cursor: pointer;
-  top: 0; left: 0; right: 0; bottom: 0;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
   background-color: #ccc;
   transition: 0.4s;
   border-radius: 26px;
@@ -308,4 +313,167 @@ main, section {
 .back-home-link:hover {
   background-color: #3b82f6; /* Light Blue */
   text-decoration: none;
+}
+
+/* ===== Search Page ===== */
+
+.search-section {
+  max-width: 800px;
+  margin: 40px auto;
+  padding: 0 20px 60px;
+  font-family: Arial, sans-serif;
+  color: #1e3a8a; /* same blue theme */
+}
+
+.search-section h1 {
+  font-size: 32px;
+  color: #1e3a8a;
+  margin-bottom: 10px;
+  font-weight: bold;
+}
+
+.search-section p {
+  margin-top: 0;
+  margin-bottom: 20px;
+  color: #374151; /* dark grey */
+  font-size: 15px;
+  line-height: 1.4;
+}
+
+/* Search input box */
+#searchInput {
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: 8px;
+  border: 2px solid #1e3a8a; /* same blue as theme */
+  font-size: 16px;
+  box-sizing: border-box;
+  outline: none;
+  margin-bottom: 15px;
+}
+
+#searchInput:focus {
+  border-color: #3b82f6; /* lighter blue */
+}
+
+/* "3 results found" / "No matches found." */
+.results-info {
+  font-size: 14px;
+  font-weight: 600;
+  color: #1e3a8a;
+  margin-bottom: 15px;
+  min-height: 20px; /* keeps layout stable */
+}
+
+/* Result cards grid */
+.results-container {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+}
+
+/* Each result card */
+.result-card {
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.07);
+  padding: 16px 16px 12px;
+  border: 1px solid #d1d5db;
+  font-family: Arial, sans-serif;
+}
+
+/* Top row: item name + location side by side */
+.result-top-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 8px;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.result-name {
+  font-size: 16px;
+  font-weight: 700;
+  color: #1e3a8a;
+  margin: 0;
+}
+
+.result-location {
+  font-size: 13px;
+  color: #374151;
+  margin: 0;
+  text-align: right;
+}
+
+.result-desc {
+  font-size: 14px;
+  color: #444;
+  line-height: 1.4;
+  margin: 0 0 6px;
+}
+
+.result-time {
+  font-size: 12px;
+  color: #6b7280;
+  font-style: italic;
+  margin: 0;
+}
+
+@media (min-width: 600px) {
+  .results-container {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+/* FORCE header row layout for search page */
+.search-header {
+  display: flex;
+  flex-wrap: nowrap; /* keep same line on desktop */
+  justify-content: space-between;
+  align-items: flex-start; /* aligns tops, not middles */
+  gap: 1rem;
+}
+
+/* force the h1 to sit on the left and not take 100% width */
+.search-header h1 {
+  flex: 1 1 auto; /* take remaining space but allow button too */
+  margin: 0; /* kill top/bottom margins so it doesn't push button down */
+  font-size: 32px;
+  color: #1e3a8a;
+  font-weight: bold;
+  line-height: 1.15;
+}
+
+/* force the button to NOT behave like a block under it */
+.back-home-inline {
+  flex: 0 0 auto; /* do not stretch, stay to the right */
+  background-color: #1e3a8a;
+  color: #f3f4f6;
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-weight: 600;
+  text-decoration: none;
+  font-size: 14px;
+  line-height: 1.2;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  transition: background-color 0.3s ease;
+  white-space: nowrap; /* keep "Back to Home" in one line */
+}
+
+.back-home-inline:hover {
+  background-color: #3b82f6;
+  text-decoration: none;
+}
+
+/* mobile fallback: stack them nicely */
+@media (max-width: 600px) {
+  .search-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .back-home-inline {
+    margin-top: 8px;
+  }
 }

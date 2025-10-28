@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Search Lost Items - LostNFound</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <!-- Navbar (same style as index/main) -->
+    <nav class="navbar">
+      <div class="container">
+        <a href="index.html" class="brand">LostNFound</a>
+        <div class="nav-links">
+          <a href="index.html">Home</a>
+          <a href="search.html">Search</a>
+          <a href="login.html">Login</a>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Search Section -->
+    <section class="search-section">
+      <div class="search-header">
+        <h1>Find Your Lost Item</h1>
+        <a href="index.html" class="back-home-inline">Back to Home</a>
+      </div>
+
+      <p>
+        Search for keywords like "AirPods", "wallet", "blue water bottle",
+        "keys"...
+      </p>
+
+      <input
+        type="text"
+        id="searchInput"
+        placeholder="Search for an item..."
+        aria-label="Search lost items"
+      />
+
+      <div id="resultsInfo" class="results-info"></div>
+
+      <div id="resultsContainer" class="results-container">
+        <!-- cards go here -->
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="footer-container">
+        <p>LostNFound &copy; 2025 — made by Gurkirit, Jade, and Ray</p>
+      </div>
+    </footer>
+
+    <script src="search.js"></script>
+  </body>
+</html>
