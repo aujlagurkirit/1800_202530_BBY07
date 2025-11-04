@@ -1,4 +1,4 @@
-/* Navbar styles */
+/* ==================== GLOBAL & NAVBAR ==================== */
 .navbar {
   background-color: #1e3a8a; /* Dark Blue */
   padding: 15px 0;
@@ -38,7 +38,7 @@
   color: #a5b4fc; /* Light blue on hover */
 }
 
-/* Reset default margins and setup for sticky footer */
+/* Reset and layout base */
 html,
 body {
   height: 100%;
@@ -52,15 +52,14 @@ body {
   min-height: 100vh;
 }
 
-/* Main content grows to fill available space */
 main,
 section {
   flex: 1;
 }
 
-/* Welcome Banner */
+/* ==================== WELCOME BANNER ==================== */
 .welcome-banner {
-  background-color: #f3f4f6; /* Light grey */
+  background-color: #f3f4f6;
   text-align: center;
   padding: 100px 20px;
   font-family: Arial, sans-serif;
@@ -68,19 +67,19 @@ section {
 
 .welcome-banner h1 {
   font-size: 48px;
-  color: #1e3a8a; /* Dark Blue */
+  color: #1e3a8a;
   margin-bottom: 20px;
 }
 
 .welcome-banner p {
   font-size: 20px;
-  color: #374151; /* Dark grey */
+  color: #374151;
   margin-bottom: 30px;
 }
 
 .btn {
-  background-color: #1e3a8a; /* Dark Blue */
-  color: #f3f4f6; /* Off-white */
+  background-color: #1e3a8a;
+  color: #f3f4f6;
   padding: 15px 30px;
   text-decoration: none;
   font-size: 18px;
@@ -89,13 +88,13 @@ section {
 }
 
 .btn:hover {
-  background-color: #3b82f6; /* Light Blue */
+  background-color: #3b82f6;
 }
 
-/* Footer */
+/* ==================== FOOTER ==================== */
 .footer {
-  background-color: #1e3a8a; /* Matches navbar dark blue */
-  color: #f3f4f6; /* Off-white text */
+  background-color: #1e3a8a;
+  color: #f3f4f6;
   text-align: center;
   padding: 20px 0;
   font-family: Arial, sans-serif;
@@ -110,7 +109,7 @@ section {
 }
 
 .footer strong {
-  color: #a5b4fc; /* Light blue */
+  color: #a5b4fc;
 }
 
 .footer p {
@@ -119,7 +118,7 @@ section {
   letter-spacing: 0.3px;
 }
 
-/* Slide-out settings tab container */
+/* ==================== SETTINGS TAB ==================== */
 #settings-tab-container {
   position: fixed;
   top: 50%;
@@ -129,21 +128,19 @@ section {
   display: flex;
   align-items: center;
   transition: width 0.3s ease;
-  width: 40px; /* Initial width showing only hamburger */
+  width: 40px;
   overflow: visible;
   background-color: transparent;
   cursor: pointer;
 }
 
-/* When hovered, expand the width and show background */
 #settings-tab-container:hover {
   width: 160px;
-  background-color: #1e3a8a; /* Dark blue background */
+  background-color: #1e3a8a;
   border-radius: 0 8px 8px 0;
   box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.2);
 }
 
-/* Hamburger icon */
 #settings-hamburger {
   color: #1e3a8a;
   font-size: 28px;
@@ -155,13 +152,11 @@ section {
   user-select: none;
 }
 
-/* Change hamburger style on hover */
 #settings-tab-container:hover #settings-hamburger {
   background: transparent;
-  color: #f3f4f6; /* Off-white */
+  color: #f3f4f6;
 }
 
-/* Slide-out "Settings" link */
 #settings-slideout {
   color: #f3f4f6;
   text-decoration: none;
@@ -175,14 +170,13 @@ section {
   user-select: none;
 }
 
-/* Show link on hover */
 #settings-tab-container:hover #settings-slideout {
   opacity: 1;
   pointer-events: auto;
   user-select: auto;
 }
 
-/* Settings page container */
+/* ==================== SETTINGS PAGE ==================== */
 .settings-container {
   max-width: 500px;
   margin: 60px auto;
@@ -194,7 +188,6 @@ section {
   color: #1e3a8a;
 }
 
-/* Settings page heading */
 .settings-container h2 {
   font-size: 32px;
   margin-bottom: 25px;
@@ -202,7 +195,6 @@ section {
   font-weight: bold;
 }
 
-/* Each individual setting row */
 .setting-item {
   margin-bottom: 25px;
   display: flex;
@@ -210,13 +202,11 @@ section {
   align-items: center;
 }
 
-/* Labels in settings */
 .setting-item label {
   font-weight: 600;
   font-size: 18px;
 }
 
-/* Toggle switch container */
 .switch {
   position: relative;
   display: inline-block;
@@ -224,14 +214,12 @@ section {
   height: 26px;
 }
 
-/* Hide default checkbox */
 .switch input {
   opacity: 0;
   width: 0;
   height: 0;
 }
 
-/* Slider styling */
 .switch .slider {
   position: absolute;
   cursor: pointer;
@@ -244,7 +232,6 @@ section {
   border-radius: 26px;
 }
 
-/* Circular knob inside slider */
 .switch .slider:before {
   position: absolute;
   content: "";
@@ -257,17 +244,14 @@ section {
   border-radius: 50%;
 }
 
-/* Checked state changes slider background */
 .switch input:checked + .slider {
   background-color: #1e3a8a;
 }
 
-/* Move knob when checked */
 .switch input:checked + .slider:before {
   transform: translateX(24px);
 }
 
-/* Buttons on settings page */
 .settings-container button {
   width: 100%;
   padding: 14px;
@@ -286,7 +270,6 @@ section {
   background-color: #3b82f6;
 }
 
-/* Status message below buttons */
 #status-message {
   text-align: center;
   font-weight: 600;
@@ -298,8 +281,8 @@ section {
   position: fixed;
   top: 20px;
   right: 20px;
-  background-color: #1e3a8a; /* Dark Blue */
-  color: #f3f4f6; /* Off-white */
+  background-color: #1e3a8a;
+  color: #f3f4f6;
   padding: 10px 15px;
   border-radius: 8px;
   font-weight: 600;
@@ -311,18 +294,17 @@ section {
 }
 
 .back-home-link:hover {
-  background-color: #3b82f6; /* Light Blue */
+  background-color: #3b82f6;
   text-decoration: none;
 }
 
-/* ===== Search Page ===== */
-
+/* ==================== SEARCH PAGE ==================== */
 .search-section {
   max-width: 800px;
   margin: 40px auto;
   padding: 0 20px 60px;
   font-family: Arial, sans-serif;
-  color: #1e3a8a; /* same blue theme */
+  color: #1e3a8a;
 }
 
 .search-section h1 {
@@ -335,17 +317,16 @@ section {
 .search-section p {
   margin-top: 0;
   margin-bottom: 20px;
-  color: #374151; /* dark grey */
+  color: #374151;
   font-size: 15px;
   line-height: 1.4;
 }
 
-/* Search input box */
 #searchInput {
   width: 100%;
   padding: 12px 14px;
   border-radius: 8px;
-  border: 2px solid #1e3a8a; /* same blue as theme */
+  border: 2px solid #1e3a8a;
   font-size: 16px;
   box-sizing: border-box;
   outline: none;
@@ -353,26 +334,23 @@ section {
 }
 
 #searchInput:focus {
-  border-color: #3b82f6; /* lighter blue */
+  border-color: #3b82f6;
 }
 
-/* "3 results found" / "No matches found." */
 .results-info {
   font-size: 14px;
   font-weight: 600;
   color: #1e3a8a;
   margin-bottom: 15px;
-  min-height: 20px; /* keeps layout stable */
+  min-height: 20px;
 }
 
-/* Result cards grid */
 .results-container {
   display: grid;
   grid-template-columns: 1fr;
   gap: 16px;
 }
 
-/* Each result card */
 .result-card {
   background: #ffffff;
   border-radius: 12px;
@@ -382,7 +360,6 @@ section {
   font-family: Arial, sans-serif;
 }
 
-/* Top row: item name + location side by side */
 .result-top-row {
   display: flex;
   justify-content: space-between;
@@ -426,28 +403,26 @@ section {
   }
 }
 
-/* FORCE header row layout for search page */
+/* Search header row layout */
 .search-header {
   display: flex;
-  flex-wrap: nowrap; /* keep same line on desktop */
+  flex-wrap: nowrap;
   justify-content: space-between;
-  align-items: flex-start; /* aligns tops, not middles */
+  align-items: flex-start;
   gap: 1rem;
 }
 
-/* force the h1 to sit on the left and not take 100% width */
 .search-header h1 {
-  flex: 1 1 auto; /* take remaining space but allow button too */
-  margin: 0; /* kill top/bottom margins so it doesn't push button down */
+  flex: 1 1 auto;
+  margin: 0;
   font-size: 32px;
   color: #1e3a8a;
   font-weight: bold;
   line-height: 1.15;
 }
 
-/* force the button to NOT behave like a block under it */
 .back-home-inline {
-  flex: 0 0 auto; /* do not stretch, stay to the right */
+  flex: 0 0 auto;
   background-color: #1e3a8a;
   color: #f3f4f6;
   padding: 10px 16px;
@@ -458,7 +433,7 @@ section {
   line-height: 1.2;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
   transition: background-color 0.3s ease;
-  white-space: nowrap; /* keep "Back to Home" in one line */
+  white-space: nowrap;
 }
 
 .back-home-inline:hover {
@@ -466,7 +441,6 @@ section {
   text-decoration: none;
 }
 
-/* mobile fallback: stack them nicely */
 @media (max-width: 600px) {
   .search-header {
     flex-direction: column;
@@ -478,17 +452,83 @@ section {
   }
 }
 
-/* Maps Section */
+/* ==================== MAPS PAGE (Merged) ==================== */
 #maps-section {
-  text-align: center;
   padding: 40px 20px;
-  background-color: #f9fafb;
+  font-family: Arial, sans-serif;
 }
 
+.map-grid {
+  display: grid;
+  grid-template-columns: 1fr 2fr; /* Info cards LEFT, map RIGHT */
+  gap: 20px;
+  align-items: start;
+}
+
+/* Map container */
 #map {
   width: 100%;
-  height: 400px;
-  border: 2px solid #ccc;
+  height: 450px;
   border-radius: 10px;
-  margin-top: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Info grid container */
+.info-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.info-title {
+  margin-bottom: 10px;
+  font-weight: bold;
+  color: #1e3a8a;
+  font-size: 18px;
+}
+
+.info-card {
+  background: #f9fafb;
+  border-radius: 10px;
+  padding: 15px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease, background 0.3s ease;
+  cursor: pointer;
+}
+
+.info-card:hover {
+  transform: translateY(-3px);
+  background: #eef2ff;
+}
+
+.info-card h3 {
+  margin: 0 0 8px;
+  color: #333;
+}
+
+.info-card p {
+  font-size: 14px;
+  color: #555;
+}
+
+/* Highlighted active card (optional) */
+.info-card.active {
+  border-left: 5px solid #1e3a8a;
+  background-color: #eef2ff;
+}
+
+/* Responsive layout */
+@media (max-width: 900px) {
+  .map-grid {
+    grid-template-columns: 1fr;
+  }
+
+  #map {
+    order: 1;
+    height: 350px;
+  }
+
+  .info-grid {
+    order: 2;
+  }
 }

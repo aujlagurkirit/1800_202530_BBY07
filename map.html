@@ -4,6 +4,8 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Search Lost Items - LostNFound</title>
+
+    <!-- External stylesheet -->
     <link rel="stylesheet" href="styles.css" />
 
     <!-- Google Maps API -->
@@ -13,6 +15,7 @@
       src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB8lfMBiLAprDsmivH3qGPze3vSVxbAQ78&callback=initMap"
     ></script>
   </head>
+
   <body>
     <!-- Navbar -->
     <nav class="navbar">
@@ -20,7 +23,7 @@
         <a href="index.html" class="brand">LostNFound</a>
         <div class="nav-links">
           <a href="index.html">Home</a>
-          <a href="search.html">Search</a>
+          <a href="search.html" aria-current="page" class="active">Search</a>
           <a href="login.html">Login</a>
         </div>
       </div>
@@ -29,12 +32,30 @@
     <!-- MAPS SECTION -->
     <section id="maps-section">
       <div class="container">
-        <h2>📍 Find Lost Items Near You</h2>
-        <p>
-          Use the map below to view your current location and view recent
-          reports.
-        </p>
-        <div id="map"></div>
+        <div class="map-grid">
+          <!-- LEFT: Info cards -->
+          <div class="info-grid">
+            <h3 class="info-title">🧭 Navigate BCIT's Lost & Found Centers!</h3>
+
+            <div class="info-card" data-location="sw01">
+              <h3>📍 BCIT Safety & Security</h3>
+              <p>(Click for more info!)</p>
+            </div>
+
+            <div class="info-card" data-location="library">
+              <h3>📍 BCIT Library</h3>
+              <p>(Click for more info!)</p>
+            </div>
+
+            <div class="info-card" data-location="gymnasium">
+              <h3>📍 BCIT Gymnasium</h3>
+              <p>(Click for more info!)</p>
+            </div>
+          </div>
+
+          <!-- RIGHT: Map -->
+          <div id="map"></div>
+        </div>
       </div>
     </section>
 
