@@ -6,13 +6,13 @@ import {
   createUserWithEmailAndPassword,
   onAuthStateChanged,
   signOut,
-  sendPasswordResetEmail
+  sendPasswordResetEmail,
 } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
 import {
   getFirestore,
   doc,
   getDoc,
-  setDoc
+  setDoc,
 } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
 
 const firebaseConfig = {
@@ -22,7 +22,7 @@ const firebaseConfig = {
   storageBucket: "lostnfound-67ee0.firebasestorage.app",
   messagingSenderId: "194790650701",
   appId: "1:194790650701:web:97d7fd597cb2350711bd04",
-  measurementId: "G-LB257QGLV4"
+  measurementId: "G-LB257QGLV4",
 };
 
 const app = initializeApp(firebaseConfig);
@@ -37,10 +37,10 @@ function displayMessage(elementId, msg) {
 }
 
 function setupDynamicNavbar() {
-  const navAuthLinks = document.getElementById('nav-auth-links');
+  const navAuthLinks = document.getElementById("nav-auth-links");
   if (!navAuthLinks) return;
 
-  onAuthStateChanged(auth, user => {
+  onAuthStateChanged(auth, (user) => {
     if (user) {
       navAuthLinks.innerHTML = `
         <a href="index.html">Home</a>
@@ -49,13 +49,15 @@ function setupDynamicNavbar() {
           Logout
         </button>
       `;
-      const logoutBtn = document.getElementById('logout-btn');
-      logoutBtn.addEventListener('click', () => {
-        signOut(auth).then(() => {
-          window.location.href = 'login.html';
-        }).catch(error => {
-          console.error('Logout error:', error.message);
-        });
+      const logoutBtn = document.getElementById("logout-btn");
+      logoutBtn.addEventListener("click", () => {
+        signOut(auth)
+          .then(() => {
+            window.location.href = "login.html";
+          })
+          .catch((error) => {
+            console.error("Logout error:", error.message);
+          });
       });
     } else {
       navAuthLinks.innerHTML = `
@@ -79,97 +81,109 @@ function logout() {
   return signOut(auth);
 }
 
-onAuthStateChanged(auth, user => {
+onAuthStateChanged(auth, (user) => {
   // You can place page-wide logic here if needed
 });
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener("DOMContentLoaded", () => {
   setupDynamicNavbar();
 
   // Login form
-  const loginForm = document.getElementById('login-form');
+  const loginForm = document.getElementById("login-form");
   if (loginForm) {
-    loginForm.addEventListener('submit', e => {
+    loginForm.addEventListener("submit", (e) => {
       e.preventDefault();
       const email = loginForm.email.value;
       const password = loginForm.password.value;
 
       login(email, password)
         .then(() => {
-          displayMessage('message', 'Login successful!');
-          window.location.href = 'main.html';
+          displayMessage("message", "Login successful!");
+          window.location.href = "main.html";
         })
-        .catch(error => {
-          displayMessage('message', `Login error: ${error.message}`);
+        .catch((error) => {
+          displayMessage("message", `Login error: ${error.message}`);
         });
     });
   }
 
   // Signup form
-  const signupForm = document.getElementById('signup-form');
+  const signupForm = document.getElementById("signup-form");
   if (signupForm) {
-    signupForm.addEventListener('submit', e => {
+    signupForm.addEventListener("submit", (e) => {
       e.preventDefault();
       const email = signupForm.email.value;
       const password = signupForm.password.value;
 
       signup(email, password)
         .then(() => {
-          displayMessage('signup-message', 'Signup successful! You can now log in.');
-          window.location.href = 'login.html';
+          displayMessage(
+            "signup-message",
+            "Signup successful! You can now log in."
+          );
+          window.location.href = "login.html";
         })
-        .catch(error => {
-          displayMessage('signup-message', `Signup error: ${error.message}`);
+        .catch((error) => {
+          displayMessage("signup-message", `Signup error: ${error.message}`);
         });
     });
   }
 
   // Password reset form
-  const resetForm = document.getElementById('reset-password-form');
+  const resetForm = document.getElementById("reset-password-form");
   if (resetForm) {
-    resetForm.addEventListener('submit', e => {
+    resetForm.addEventListener("submit", (e) => {
       e.preventDefault();
-      const email = resetForm['reset-email'].value;
+      const email = resetForm["reset-email"].value;
 
       sendPasswordResetEmail(auth, email)
         .then(() => {
-          displayMessage('reset-message', 'Password reset email sent! Check your inbox.');
+          displayMessage(
+            "reset-message",
+            "Password reset email sent! Check your inbox."
+          );
         })
-        .catch(error => {
-          displayMessage('reset-message', `Error: ${error.message}`);
+        .catch((error) => {
+          displayMessage("reset-message", `Error: ${error.message}`);
         });
     });
   }
 
   // Logout button on main.html
-  const staticLogoutBtn = document.getElementById('logout-btn');
+  const staticLogoutBtn = document.getElementById("logout-btn");
   if (staticLogoutBtn) {
-    staticLogoutBtn.addEventListener('click', () => {
+    staticLogoutBtn.addEventListener("click", () => {
       signOut(auth)
         .then(() => {
-          window.location.href = 'login.html';
+          window.location.href = "login.html";
         })
-        .catch(error => {
-          console.error('Logout error:', error.message);
+        .catch((error) => {
+          console.error("Logout error:", error.message);
         });
     });
   }
 
   // Notification toggle logic
-  const toggle = document.getElementById('notifications-toggle');
-  const statusMessage = document.getElementById('status-message');
+  const toggle = document.getElementById("notifications-toggle");
+  const statusMessage = document.getElementById("status-message");
 
   if (toggle && statusMessage) {
     toggle.disabled = true; // disable toggle until loaded
 
     onAuthStateChanged(auth, async (user) => {
       if (!user) {
-        window.location.href = 'login.html';
+        window.location.href = "login.html";
         return;
       }
 
       try {
-        const docRef = doc(db, "users", user.uid, "notificationSettings", "preferences");
+        const docRef = doc(
+          db,
+          "users",
+          user.uid,
+          "notificationSettings",
+          "preferences"
+        );
         const docSnap = await getDoc(docRef);
         if (docSnap.exists()) {
           toggle.checked = docSnap.data().enableNotifications || false;
@@ -185,7 +199,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
 
-    toggle.addEventListener('change', async () => {
+    toggle.addEventListener("change", async () => {
       if (toggle.disabled) return; // ignore if disabled
 
       toggle.disabled = true; // disable during save
@@ -199,7 +213,13 @@ document.addEventListener('DOMContentLoaded', () => {
       }
 
       try {
-        const docRef = doc(db, "users", user.uid, "notificationSettings", "preferences");
+        const docRef = doc(
+          db,
+          "users",
+          user.uid,
+          "notificationSettings",
+          "preferences"
+        );
         await setDoc(docRef, { enableNotifications: toggle.checked });
         if (toggle.checked) {
           alert("You have enabled notifications for this site.");
@@ -218,3 +238,39 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 });
+
+// ===== Dashboard wiring =====
+const greetEl = document.getElementById("dash-greeting");
+const aEl = (id) => document.getElementById(id);
+
+function setDemoStatsAndActivity() {
+  aEl("stat-active") && (aEl("stat-active").textContent = "2");
+  aEl("stat-returned") && (aEl("stat-returned").textContent = "1");
+  aEl("stat-community") && (aEl("stat-community").textContent = "14");
+  aEl("stat-matches") && (aEl("stat-matches").textContent = "3");
+  const list = document.getElementById("recent-activity");
+  if (list) {
+    list.innerHTML = `
+      <li><span class="dot"></span> You updated <strong>“Blue Hydroflask”</strong> · 2h ago</li>
+      <li><span class="dot"></span> Match found on <strong>“AirPods Case”</strong> · 6h ago</li>
+      <li><span class="dot"></span> You posted <strong>“BCIT ID Card”</strong> · yesterday</li>
+    `;
+  }
+}
+
+// If you already have onAuthStateChanged(auth, cb) call:
+//   inside the "user is logged in" branch, set the greeting and call setDemoStatsAndActivity().
+// Otherwise, do a simple fallback:
+try {
+  // If your auth listener sets window.currentUser, use that name/email
+  const name =
+    (window.currentUser &&
+      (window.currentUser.displayName ||
+        window.currentUser.email?.split("@")[0])) ||
+    "there";
+  if (greetEl) greetEl.textContent = `Welcome, ${name}!`;
+  setDemoStatsAndActivity();
+} catch (e) {
+  if (greetEl) greetEl.textContent = "Welcome!";
+  setDemoStatsAndActivity();
+}

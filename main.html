@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>LostNFound - Main</title>
+    <title>LostNFound - My BCIT Project</title>
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
@@ -44,18 +44,77 @@
     </div>
 
     <!-- Main Content -->
-    <section
-      style="
-        padding: 40px 20px;
-        font-family: Arial, sans-serif;
-        max-width: 800px;
-        margin: 0 auto;
-      "
-    >
-      <h1>Welcome to your Dashboard!</h1>
-      <p>
-        This is the main page where you can manage your lost and found items.
-      </p>
+    <!-- Main Content -->
+    <section class="dash-container">
+      <!-- Greeting / Hero -->
+      <div class="dash-hero">
+        <div>
+          <h1 id="dash-greeting">Welcome!</h1>
+          <p class="dash-sub">
+            Manage lost & found reports, post new finds, and track activity.
+          </p>
+        </div>
+        <div class="dash-actions">
+          <a class="btn primary" href="report.html">+ Report Found Item</a>
+          <a class="btn" href="my-items.html">My Reports</a>
+        </div>
+      </div>
+
+      <!-- Stats row -->
+      <div class="stats-grid">
+        <div class="stat">
+          <div class="stat-label">My Active Reports</div>
+          <div class="stat-value" id="stat-active">—</div>
+        </div>
+        <div class="stat">
+          <div class="stat-label">Items I Returned</div>
+          <div class="stat-value" id="stat-returned">—</div>
+        </div>
+        <div class="stat">
+          <div class="stat-label">Community Reports (24h)</div>
+          <div class="stat-value" id="stat-community">—</div>
+        </div>
+        <div class="stat">
+          <div class="stat-label">Matches / Messages</div>
+          <div class="stat-value" id="stat-matches">—</div>
+        </div>
+      </div>
+
+      <!-- Quick actions -->
+      <div class="cards-grid">
+        <a class="card" href="report.html">
+          <h3>Report Found Item</h3>
+          <p>
+            Post a found item with title, description, category, and location.
+          </p>
+        </a>
+        <a class="card" href="search.html">
+          <h3>Search Lost Items</h3>
+          <p>Look up items by keywords, category, or campus.</p>
+        </a>
+        <a class="card" href="my-items.html">
+          <h3>My Reports</h3>
+          <p>Edit, close, or delete the items you posted.</p>
+        </a>
+        <a class="card" href="map.html">
+          <h3>Map View</h3>
+          <p>See recent reports pinned by location.</p>
+        </a>
+      </div>
+
+      <!-- Recent Activity -->
+      <div class="panel">
+        <div class="panel-header">
+          <h2>Recent Activity</h2>
+          <a class="link" href="my-items.html">View all</a>
+        </div>
+        <ul class="activity" id="recent-activity">
+          <li>
+            <span class="dot"></span> No recent activity yet. Report something
+            you found!
+          </li>
+        </ul>
+      </div>
     </section>
 
     <!-- Footer -->
