@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>BCIT Gymnasium - LostNFound</title>
+
+    <!-- External stylesheet -->
+    <link rel="stylesheet" href="styles.css" />
+
+    <!-- Google Maps API -->
+    <script
+      async
+      defer
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB8lfMBiLAprDsmivH3qGPze3vSVxbAQ78&callback=initMap"
+    ></script>
+  </head>
+
+  <body>
+    <!-- Small Back Button -->
+    <a href="map.html" class="back-btn">← Back</a>
+
+    <!-- Navbar -->
+    <nav class="navbar">
+      <div class="container">
+        <a href="index.html" class="brand">LostNFound</a>
+        <div class="nav-links">
+          <a href="index.html">Home</a>
+          <a href="search.html" aria-current="page" class="active">Search</a>
+          <a href="login.html">Login</a>
+        </div>
+      </div>
+    </nav>
+
+    <!-- MAPS SECTION -->
+    <section id="maps-section">
+      <div class="container">
+        <div class="map-grid">
+          <!-- LEFT: Single Info Panel -->
+          <div class="info-panel">
+            <h2 class="info-title">🏋️ BCIT Gymnasium</h2>
+
+            <p class="info-description">
+              The BCIT Gymnasium, located at the north end of campus, offers
+              fitness, sports, and recreation facilities for students and staff.
+              Items left behind in locker rooms, courts, or workout areas are
+              stored in the Gymnasium’s Lost & Found area, managed by staff at
+              the front desk.
+            </p>
+
+            <div class="info-details">
+              <p>
+                <strong>📍 Location:</strong> Building SE16, BCIT Burnaby Campus
+              </p>
+              <p><strong>📞 Phone:</strong> 604-432-8608</p>
+              <p>
+                <strong>✉️ Email:</strong>
+                <a href="mailto:bcit_recreation@bcit.ca">recreation@bcit.ca</a>
+              </p>
+              <p><strong>🕒 Hours:</strong> Monday–Friday, 6:30 AM – 9:30 PM</p>
+              <p style="margin-left: 30px">
+                Saturday–Sunday, 8:00 AM – 6:00 PM
+              </p>
+            </div>
+
+            <button class="btn" id="directions-btn">
+              🗺️ Get Directions on Google Maps
+            </button>
+          </div>
+
+          <!-- RIGHT: Map -->
+          <div id="map"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="footer-container">
+        <p>LostNFound &copy; 2025 — made by Gurkirit, Jade, and Ray</p>
+      </div>
+    </footer>
+
+    <!-- JS file -->
+    <script src="map3.js"></script>
+  </body>
+</html>

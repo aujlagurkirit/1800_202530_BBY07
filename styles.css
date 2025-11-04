@@ -516,6 +516,45 @@ section {
   border-left: 5px solid #1e3a8a;
   background-color: #eef2ff;
 }
+.more-info-btn {
+  display: inline-block;
+  background-color: #1e3a8a; /* Dark blue */
+  color: #f3f4f6;
+  padding: 6px 10px; /* smaller padding */
+  font-size: 12px; /* smaller text */
+  border-radius: 5px; /* slightly tighter corners */
+  text-decoration: none;
+  margin-top: 6px; /* less space above */
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.more-info-btn:hover {
+  background-color: #3b82f6; /* Light blue hover */
+  transform: translateY(-2px); /* slight lift effect */
+  text-decoration: none;
+}
+
+/* --- Small Back Button (Top Left Corner) --- */
+.back-btn {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  background-color: #1e3a8a; /* Dark blue theme */
+  color: #f3f4f6; /* Off-white */
+  padding: 6px 10px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+  z-index: 1002; /* Above navbar */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.back-btn:hover {
+  background-color: #3b82f6; /* Lighter blue on hover */
+  transform: translateY(-2px);
+}
 
 /* Responsive layout */
 @media (max-width: 900px) {

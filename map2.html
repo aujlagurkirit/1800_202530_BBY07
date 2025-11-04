@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>BCIT Library - LostNFound</title>
+
+    <!-- External stylesheet -->
+    <link rel="stylesheet" href="styles.css" />
+
+    <!-- Google Maps API -->
+    <script
+      async
+      defer
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB8lfMBiLAprDsmivH3qGPze3vSVxbAQ78&callback=initMap"
+    ></script>
+  </head>
+
+  <body>
+    <!-- Small Back Button -->
+    <a href="map.html" class="back-btn">← Back</a>
+
+    <!-- Navbar -->
+    <nav class="navbar">
+      <div class="container">
+        <a href="index.html" class="brand">LostNFound</a>
+        <div class="nav-links">
+          <a href="index.html">Home</a>
+          <a href="search.html" aria-current="page" class="active">Search</a>
+          <a href="login.html">Login</a>
+        </div>
+      </div>
+    </nav>
+
+    <!-- MAPS SECTION -->
+    <section id="maps-section">
+      <div class="container">
+        <div class="map-grid">
+          <!-- LEFT: Single Info Panel -->
+          <div class="info-panel">
+            <h2 class="info-title">📚 BCIT Library</h2>
+
+            <p class="info-description">
+              The BCIT Library provides a range of student resources and study
+              spaces, as well as a dedicated Lost & Found service for items left
+              behind in study areas, classrooms, and computer labs. Visit the
+              Library Service Desk to inquire about lost items or to turn in
+              something you’ve found.
+            </p>
+
+            <div class="info-details">
+              <p>
+                <strong>📍 Location:</strong> Building SE14, Main Floor (Burnaby
+                Campus)
+              </p>
+              <p><strong>📞 Phone:</strong> 604-432-8370</p>
+              <p>
+                <strong>✉️ Email:</strong>
+                <a href="mailto:bcit_library@bcit.ca">library@bcit.ca</a>
+              </p>
+              <p><strong>🕒 Hours:</strong> Monday–Friday, 7:00 AM – 9:00 PM</p>
+              <p style="margin-left: 30px">
+                Saturday–Sunday, 9:00 AM – 5:00 PM
+              </p>
+            </div>
+
+            <button class="btn" id="directions-btn">
+              🗺️ Get Directions on Google Maps
+            </button>
+          </div>
+
+          <!-- RIGHT: Map -->
+          <div id="map"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="footer-container">
+        <p>LostNFound &copy; 2025 — made by Gurkirit, Jade, and Ray</p>
+      </div>
+    </footer>
+
+    <!-- JS file -->
+    <script src="map2.js"></script>
+  </body>
+</html>
