@@ -101,3 +101,17 @@ searchInput.addEventListener("input", (e) => {
 
 // show all items at page load
 renderResults(lostItems);
+
+// Logout button on search.html
+const staticLogoutBtn = document.getElementById("logout-btn");
+if (staticLogoutBtn) {
+  staticLogoutBtn.addEventListener("click", () => {
+    signOut(auth)
+      .then(() => {
+        window.location.href = "login.html";
+      })
+      .catch((error) => {
+        console.error("Logout error:", error.message);
+      });
+  });
+}
