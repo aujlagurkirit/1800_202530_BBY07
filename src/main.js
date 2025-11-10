@@ -274,3 +274,179 @@ try {
   if (greetEl) greetEl.textContent = "Welcome!";
   setDemoStatsAndActivity();
 }
+
+// -------------------------------
+// Profile Form Logic
+// -------------------------------
+document.addEventListener("DOMContentLoaded", () => {
+  const profileForm = document.getElementById("profile-form");
+  if (!profileForm) return; // Exit if form not found
+
+  const message = document.createElement("p");
+  profileForm.parentNode.insertBefore(message, profileForm.nextSibling);
+
+  profileForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const user = auth.currentUser;
+    if (!user) {
+      message.textContent = "You must be logged in to save your profile.";
+      message.style.color = "red";
+      return;
+    }
+
+    const username = profileForm.username.value.trim();
+    const email = profileForm.email.value.trim();
+    const phone = profileForm.phone.value.trim();
+
+    if (!username || !email || !phone) {
+      message.textContent = "Please fill in all fields.";
+      message.style.color = "red";
+      return;
+    }
+
+    const profileData = { username, email, phone };
+
+    try {
+      // Save profile data in Firestore under 'profiles/{uid}'
+      await setDoc(doc(db, "profiles", user.uid), profileData);
+
+      message.textContent = "Profile saved successfully!";
+      message.style.color = "green";
+      profileForm.reset();
+    } catch (error) {
+      message.textContent = "Error saving profile: " + error.message;
+      message.style.color = "red";
+      console.error("Firestore Error:", error);
+    }
+  });
+});
+
+document.addEventListener("DOMContentLoaded", () => {
+  const profileForm = document.getElementById("profile-form");
+  const editBtn = document.getElementById("edit-btn");
+
+  if (!profileForm || !editBtn) return;
+
+  const message = document.createElement("p");
+  profileForm.parentNode.insertBefore(message, profileForm.nextSibling);
+
+  const usernameInput = profileForm.username;
+  const emailInput = profileForm.email;
+  const phoneInput = profileForm.phone;
+
+  const auth = getAuth();
+  const db = getFirestore();
+
+  // Enable/disable inputs (lock/unlock)
+  function setInputsDisabled(disabled) {
+    usernameInput.disabled = disabled;
+    emailInput.disabled = disabled;
+    phoneInput.disabled = disabled;
+  }
+
+  // Initially lock the inputs
+  setInputsDisabled(true);
+
+  // Load saved profile on page load
+  onAuthStateChanged(auth, async (user) => {
+    if (!user) {
+      message.textContent = "You must be logged in to view profile.";
+      message.style.color = "red";
+      setInputsDisabled(true);
+      profileForm.style.display = "none";
+      editBtn.style.display = "none";
+      return;
+    }
+
+    profileForm.style.display = "block";
+    editBtn.style.display = "inline-block";
+
+    try {
+      const docRef = doc(db, "profiles", user.uid);
+      const docSnap = await getDoc(docRef);
+
+      if (docSnap.exists()) {
+        const data = docSnap.data();
+        usernameInput.value = data.username || "";
+        emailInput.value = data.email || "";
+        phoneInput.value = data.phone || "";
+        setInputsDisabled(true);
+      } else {
+        // No data yet, allow user to fill form
+        setInputsDisabled(false);
+      }
+    } catch (error) {
+      message.textContent = "Error loading profile: " + error.message;
+      message.style.color = "red";
+    }
+  });
+
+  // Edit button toggles input enabled state
+  editBtn.addEventListener("click", () => {
+    if (usernameInput.disabled) {
+      // Unlock inputs to edit
+      setInputsDisabled(false);
+      editBtn.textContent = "Cancel";
+    } else {
+      // Cancel editing: reload data and lock inputs
+      onAuthStateChanged(auth, async (user) => {
+        if (!user) return;
+
+        const docRef = doc(db, "profiles", user.uid);
+        const docSnap = await getDoc(docRef);
+
+        if (docSnap.exists()) {
+          const data = docSnap.data();
+          usernameInput.value = data.username || "";
+          emailInput.value = data.email || "";
+          phoneInput.value = data.phone || "";
+        } else {
+          usernameInput.value = "";
+          emailInput.value = "";
+          phoneInput.value = "";
+        }
+
+        setInputsDisabled(true);
+        editBtn.textContent = "Edit";
+        message.textContent = "";
+      });
+    }
+  });
+
+  profileForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const user = auth.currentUser;
+    if (!user) {
+      message.textContent = "You must be logged in to save your profile.";
+      message.style.color = "red";
+      return;
+    }
+
+    const username = usernameInput.value.trim();
+    const email = emailInput.value.trim();
+    const phone = phoneInput.value.trim();
+
+    if (!username || !email || !phone) {
+      message.textContent = "Please fill in all fields.";
+      message.style.color = "red";
+      return;
+    }
+
+    const profileData = { username, email, phone };
+
+    try {
+      await setDoc(doc(db, "profiles", user.uid), profileData);
+      message.textContent = "Profile saved successfully!";
+      message.style.color = "green";
+      setInputsDisabled(true);
+      editBtn.textContent = "Edit";
+    } catch (error) {
+      message.textContent = "Error saving profile: " + error.message;
+      message.style.color = "red";
+      console.error(error);
+    }
+  });
+});
+
