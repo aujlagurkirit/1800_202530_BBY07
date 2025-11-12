@@ -251,6 +251,7 @@ function setDemoStatsAndActivity() {
   const list = document.getElementById("recent-activity");
   if (list) {
     list.innerHTML = `
+      <li><span class="dot"></span> You posted <strong>“Apple Macbook Air (Midnight)”</strong> · 2m ago</li>
       <li><span class="dot"></span> You updated <strong>“Blue Hydroflask”</strong> · 2h ago</li>
       <li><span class="dot"></span> Match found on <strong>“AirPods Case”</strong> · 6h ago</li>
       <li><span class="dot"></span> You posted <strong>“BCIT ID Card”</strong> · yesterday</li>
@@ -449,4 +450,3 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 });
-

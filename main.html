@@ -46,7 +46,9 @@
       <div id="settings-hamburger">&#9776;</div>
       <div id="settings-menu">
         <a href="settings.html" class="settings-parent">Settings</a>
-        <a href="notifications.html" class="settings-parent notification-tab">Notifications</a>
+        <a href="notifications.html" class="settings-parent notification-tab"
+          >Notifications</a
+        >
       </div>
     </div>
 
@@ -61,65 +63,23 @@
           </p>
         </div>
         <div class="dash-actions">
-          <a class="btn primary" href="report.html">+ Report Found Item</a>
-          <a class="btn" href="my-items.html">My Reports</a>
+          <a class="btn primary" href="report.html">+ Make Posts</a>
+          <a class="btn" href="my-items.html">My Posts</a>
         </div>
       </div>
 
-      <!-- Stats row -->
-      <div class="stats-grid">
-        <div class="stat">
-          <div class="stat-label">My Active Reports</div>
-          <div class="stat-value" id="stat-active">—</div>
+      <div class="core-stack">
+        <div class="panel" id="recent-posts-panel">
+          <div class="panel-header">
+            <h2>Recent Posts</h2>
+            <a class="link" href="search.html">See all</a>
+          </div>
+          <ul class="activity" id="recent-activity">
+            <li>
+              <span class="dot"></span> Could not load posts. Try again later.
+            </li>
+          </ul>
         </div>
-        <div class="stat">
-          <div class="stat-label">Items I Returned</div>
-          <div class="stat-value" id="stat-returned">—</div>
-        </div>
-        <div class="stat">
-          <div class="stat-label">Community Reports (24h)</div>
-          <div class="stat-value" id="stat-community">—</div>
-        </div>
-        <div class="stat">
-          <div class="stat-label">Matches / Messages</div>
-          <div class="stat-value" id="stat-matches">—</div>
-        </div>
-      </div>
-
-      <!-- Quick actions -->
-      <div class="cards-grid">
-        <a class="card" href="report.html">
-          <h3>Report Found Item</h3>
-          <p>
-            Post a found item with title, description, category, and location.
-          </p>
-        </a>
-        <a class="card" href="search.html">
-          <h3>Search Lost Items</h3>
-          <p>Look up items by keywords, category, or campus.</p>
-        </a>
-        <a class="card" href="my-items.html">
-          <h3>My Reports</h3>
-          <p>Edit, close, or delete the items you posted.</p>
-        </a>
-        <a class="card" href="map.html">
-          <h3>Map View</h3>
-          <p>See recent reports pinned by location.</p>
-        </a>
-      </div>
-
-      <!-- Recent Activity -->
-      <div class="panel">
-        <div class="panel-header">
-          <h2>Recent Activity</h2>
-          <a class="link" href="my-items.html">View all</a>
-        </div>
-        <ul class="activity" id="recent-activity">
-          <li>
-            <span class="dot"></span> No recent activity yet. Report something
-            you found!
-          </li>
-        </ul>
       </div>
     </section>
 
