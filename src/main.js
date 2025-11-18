@@ -149,7 +149,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // Logout button on main.html
+  // Logout button on main.html (static navbar version)
   const staticLogoutBtn = document.getElementById("logout-btn");
   if (staticLogoutBtn) {
     staticLogoutBtn.addEventListener("click", () => {
@@ -237,33 +237,27 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
   }
+
+  // === NEW: load recent posts on main dashboard from localStorage ===
+  const recentList = document.getElementById("recent-activity");
+  if (recentList) {
+    renderRecentFromStorage();
+  }
 });
 
 // ===== Dashboard wiring =====
 const greetEl = document.getElementById("dash-greeting");
 const aEl = (id) => document.getElementById(id);
 
+// we keep stats as demo; don't touch Recent Posts here
 function setDemoStatsAndActivity() {
   aEl("stat-active") && (aEl("stat-active").textContent = "2");
   aEl("stat-returned") && (aEl("stat-returned").textContent = "1");
   aEl("stat-community") && (aEl("stat-community").textContent = "14");
   aEl("stat-matches") && (aEl("stat-matches").textContent = "3");
-  const list = document.getElementById("recent-activity");
-  if (list) {
-    list.innerHTML = `
-      <li><span class="dot"></span> You posted <strong>“Apple Macbook Air (Midnight)”</strong> · 2m ago</li>
-      <li><span class="dot"></span> You updated <strong>“Blue Hydroflask”</strong> · 2h ago</li>
-      <li><span class="dot"></span> Match found on <strong>“AirPods Case”</strong> · 6h ago</li>
-      <li><span class="dot"></span> You posted <strong>“BCIT ID Card”</strong> · yesterday</li>
-    `;
-  }
 }
 
-// If you already have onAuthStateChanged(auth, cb) call:
-//   inside the "user is logged in" branch, set the greeting and call setDemoStatsAndActivity().
-// Otherwise, do a simple fallback:
 try {
-  // If your auth listener sets window.currentUser, use that name/email
   const name =
     (window.currentUser &&
       (window.currentUser.displayName ||
@@ -274,6 +268,80 @@ try {
 } catch (e) {
   if (greetEl) greetEl.textContent = "Welcome!";
   setDemoStatsAndActivity();
+}
+
+// ---------- NEW HELPERS FOR RECENT POSTS (LOCALSTORAGE) ----------
+function loadPostsFromStorage() {
+  try {
+    const raw = localStorage.getItem("lnf_posts");
+    const arr = raw ? JSON.parse(raw) : [];
+    if (!Array.isArray(arr)) return [];
+    // newest first
+    return arr.sort((a, b) => {
+      const da = new Date(a.createdAt || 0).getTime();
+      const db = new Date(b.createdAt || 0).getTime();
+      return db - da;
+    });
+  } catch {
+    return [];
+  }
+}
+
+function formatRelativeTime(isoString) {
+  if (!isoString) return "";
+  const d = new Date(isoString);
+  if (Number.isNaN(d.getTime())) return "";
+  const diffSec = (Date.now() - d.getTime()) / 1000;
+
+  if (diffSec < 60) return "just now";
+  if (diffSec < 3600) return `${Math.floor(diffSec / 60)}m ago`;
+  if (diffSec < 86400) return `${Math.floor(diffSec / 3600)}h ago`;
+  const days = Math.floor(diffSec / 86400);
+  if (days === 1) return "1 day ago";
+  if (days < 7) return `${days} days ago`;
+  return d.toLocaleDateString();
+}
+
+function renderRecentFromStorage() {
+  const list = document.getElementById("recent-activity");
+  if (!list) return;
+
+  const posts = loadPostsFromStorage();
+
+  if (!posts.length) {
+    list.innerHTML = `
+      <li>
+        <span class="dot"></span>
+        <div>No posts yet. Be the first to make one.</div>
+      </li>
+    `;
+    return;
+  }
+
+  list.innerHTML = "";
+  posts.slice(0, 5).forEach((p) => {
+    const title = p.title || "Untitled";
+    const desc = p.description || "";
+    const loc = p.location || "Unknown location";
+    const cat = p.category || "Other";
+    const when = formatRelativeTime(p.createdAt);
+
+    list.insertAdjacentHTML(
+      "beforeend",
+      `
+      <li>
+        <span class="dot"></span>
+        <div>
+          <strong>${title}</strong><br>
+          <span style="color:#64748b; font-size:0.9rem;">
+            ${loc} · ${cat} · ${when}
+          </span><br>
+          <span>${desc}</span>
+        </div>
+      </li>
+    `
+    );
+  });
 }
 
 // -------------------------------
@@ -336,8 +404,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const emailInput = profileForm.email;
   const phoneInput = profileForm.phone;
 
-  const auth = getAuth();
-  const db = getFirestore();
+  const auth2 = getAuth();
+  const db2 = getFirestore();
 
   // Enable/disable inputs (lock/unlock)
   function setInputsDisabled(disabled) {
@@ -350,7 +418,7 @@ document.addEventListener("DOMContentLoaded", () => {
   setInputsDisabled(true);
 
   // Load saved profile on page load
-  onAuthStateChanged(auth, async (user) => {
+  onAuthStateChanged(auth2, async (user) => {
     if (!user) {
       message.textContent = "You must be logged in to view profile.";
       message.style.color = "red";
@@ -364,7 +432,7 @@ document.addEventListener("DOMContentLoaded", () => {
     editBtn.style.display = "inline-block";
 
     try {
-      const docRef = doc(db, "profiles", user.uid);
+      const docRef = doc(db2, "profiles", user.uid);
       const docSnap = await getDoc(docRef);
 
       if (docSnap.exists()) {
@@ -391,10 +459,10 @@ document.addEventListener("DOMContentLoaded", () => {
       editBtn.textContent = "Cancel";
     } else {
       // Cancel editing: reload data and lock inputs
-      onAuthStateChanged(auth, async (user) => {
+      onAuthStateChanged(auth2, async (user) => {
         if (!user) return;
 
-        const docRef = doc(db, "profiles", user.uid);
+        const docRef = doc(db2, "profiles", user.uid);
         const docSnap = await getDoc(docRef);
 
         if (docSnap.exists()) {
@@ -418,7 +486,7 @@ document.addEventListener("DOMContentLoaded", () => {
   profileForm.addEventListener("submit", async (e) => {
     e.preventDefault();
 
-    const user = auth.currentUser;
+    const user = auth2.currentUser;
     if (!user) {
       message.textContent = "You must be logged in to save your profile.";
       message.style.color = "red";
@@ -438,7 +506,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const profileData = { username, email, phone };
 
     try {
-      await setDoc(doc(db, "profiles", user.uid), profileData);
+      await setDoc(doc(db2, "profiles", user.uid), profileData);
       message.textContent = "Profile saved successfully!";
       message.style.color = "green";
       setInputsDisabled(true);
