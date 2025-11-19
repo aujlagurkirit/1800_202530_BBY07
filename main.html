@@ -83,6 +83,44 @@
       </div>
     </section>
 
+    <section id="maps-section">
+      <div class="container">
+        <div class="map-grid">
+          <!-- LEFT: Info cards -->
+          <div class="info-grid">
+            <h3 class="info-title">🧭 Recently Lost Items!</h3>
+
+            <!-- Card 1 -->
+            <div class="info-card" data-location="sw01">
+              <h3>📍 JBL Headphones • 3h ago</h3>
+              <p>Black JBL Headphones.</p>
+              <a href="map1.html" class="btn more-info-btn">More Info</a>
+            </div>
+
+            <!-- Card 2 -->
+            <div class="info-card" data-location="library">
+              <h3>📍 Water Bottle • 7h ago</h3>
+              <p>
+                Blue Water Bottle with a silver cap. Has the gatorade logo on
+                it.
+              </p>
+              <a href="map2.html" class="btn more-info-btn">More Info</a>
+            </div>
+
+            <!-- Card 3 -->
+            <div class="info-card" data-location="gymnasium">
+              <h3>📍 Airpods • 20h ago</h3>
+              <p>Airpods with Black hardshell case</p>
+              <a href="map3.html" class="btn more-info-btn">More Info</a>
+            </div>
+          </div>
+
+          <!-- RIGHT: Map -->
+          <div id="map"></div>
+        </div>
+      </div>
+    </section>
+
     <!-- Footer -->
     <footer class="footer">
       <div class="footer-container">
@@ -90,6 +128,12 @@
       </div>
     </footer>
 
-    <script type="module" src="src/main.js"></script>
+    <script src="src/main.js" defer></script>
+
+    <script
+      async
+      defer
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBJzVaa2VGL0QBU-5R9hYKZTRBScwGnL5o&callback=initMap"
+    ></script>
   </body>
 </html>
