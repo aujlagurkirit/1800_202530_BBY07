@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Search Lost Items - LostNFound</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <!-- Navbar (same style as index/main) -->
+    <nav class="navbar">
+      <div class="container">
+        <a href="main.html" class="brand">LostNFound</a>
+        <div class="nav-links">
+          <a href="main.html">Home</a>
+          <a
+            href="search.html"
+            style="margin-left: 20px; color: #d1d5db; text-decoration: none"
+            >Search</a
+          >
+          <a href="map.html">Maps</a>
+          <button
+            id="logout-btn"
+            style="
+              background: none;
+              border: none;
+              color: #d1d5db;
+              cursor: pointer;
+              font-size: 16px;
+              margin-left: 20px;
+            "
+          >
+            Logout
+          </button>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Search Section -->
+    <section class="search-section">
+      <div
+        id="sortOptions"
+        style="display: flex; gap: 10px; margin: 10px 0; flex-wrap: wrap"
+      >
+        <div class="sort-card" data-sort="recent">Most Recent</div>
+        <div class="sort-card" data-sort="oldest">Oldest</div>
+        <div class="sort-card" data-sort="az">A → Z</div>
+        <div class="sort-card" data-sort="za">Z → A</div>
+      </div>
+
+      <div class="search-header">
+        <h1>Find Your Lost Item</h1>
+        <a href="main.html" class="back-home-inline">Back to Home</a>
+      </div>
+
+      <p>
+        Search for keywords like "AirPods", "wallet", "blue water bottle",
+        "keys"...
+      </p>
+
+      <input
+        type="text"
+        id="searchInput"
+        placeholder="Search for an item..."
+        aria-label="Search lost items"
+      />
+
+      <div id="resultsInfo" class="results-info"></div>
+
+      <div id="resultsContainer" class="results-container">
+        <!-- cards go here -->
+      </div>
+
+      <!-- Modal for post details -->
+      <div id="postModal" class="modal">
+        <div class="modal-content">
+          <span id="modalClose" class="close">&times;</span>
+          <h2 id="modalTitle"></h2>
+          <img id="modalImage" style="max-width: 100%; display: none" />
+          <p id="modalDesc"></p>
+          <p><strong>Location:</strong> <span id="modalLocation"></span></p>
+          <p><strong>Category:</strong> <span id="modalCategory"></span></p>
+          <p><strong>Posted:</strong> <span id="modalTime"></span></p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="footer-container">
+        <p>LostNFound &copy; 2025 — made by Gurkirit, Jade, and Ray</p>
+      </div>
+    </footer>
+
+    <script src="search.js"></script>
+  </body>
+</html>

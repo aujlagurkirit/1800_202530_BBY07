@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Make a Post — LostNFound</title>
+
+    <link rel="stylesheet" href="styles.css" />
+    <!-- Optional: if you had a separate report.css; safe to omit if styles.css already contains the form styles -->
+    <!-- <link rel="stylesheet" href="report.css" /> -->
+  </head>
+  <body>
+    <!-- Navbar -->
+    <nav class="navbar">
+      <div class="container">
+        <a href="main.html" class="brand">LostNFound</a>
+      </div>
+    </nav>
+
+    <!-- Pretty form -->
+    <main class="report-wrap">
+      <header class="report-header">
+        <div>
+          <h1 class="report-title">Report Found Item</h1>
+          <p class="report-sub">Fill the details below and submit.</p>
+        </div>
+      </header>
+
+      <form id="report-form" class="report-card" novalidate>
+        <div class="form-row">
+          <label for="title">Title<span class="badge-req">*</span></label>
+          <input id="title" name="title" class="input" required />
+        </div>
+
+        <div class="form-row">
+          <label for="description"
+            >Description<span class="badge-req">*</span></label
+          >
+          <textarea
+            id="description"
+            name="description"
+            class="textarea"
+            rows="5"
+            required
+          ></textarea>
+        </div>
+
+        <div class="form-row row-2">
+          <div>
+            <label for="category"
+              >Category<span class="badge-req">*</span></label
+            >
+            <select id="category" name="category" class="select" required>
+              <option value="">Select…</option>
+              <option>Electronics</option>
+              <option>ID / Cards</option>
+              <option>Clothing</option>
+              <option>Other</option>
+            </select>
+          </div>
+          <div>
+            <label for="location"
+              >Location (where found)<span class="badge-req">*</span></label
+            >
+            <input id="location" name="location" class="input" required />
+          </div>
+        </div>
+
+        <div class="form-row">
+          <label for="photo">Photo (optional)</label>
+          <input id="photo" type="file" class="file" accept="image/*" />
+        </div>
+
+        <div class="actions">
+          <button id="submit-btn" type="submit" class="btn-primary">
+            Submit Post
+          </button>
+          <a href="main.html" class="btn-ghost">Cancel</a>
+        </div>
+
+        <p id="form-msg" class="help" aria-live="polite"></p>
+      </form>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-container">
+        <p>LostNFound &copy; 2025 — made by Gurkirit, Jade, and Ray</p>
+      </div>
+    </footer>
+
+    <!-- Load the submit logic -->
+    <script type="module" src="report.js"></script>
+  </body>
+</html>

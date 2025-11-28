@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>BCIT Safety & Security - LostNFound</title>
+
+    <!-- External stylesheet -->
+    <link rel="stylesheet" href="styles.css" />
+
+    <!-- Google Maps API -->
+    <script
+      async
+      defer
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB8lfMBiLAprDsmivH3qGPze3vSVxbAQ78&callback=initMap"
+    ></script>
+  </head>
+
+  <body>
+    <!-- Small Back Button -->
+    <a href="map.html" class="back-btn">← Back</a>
+
+    <!-- Navbar -->
+    <nav class="navbar">
+      <div class="container">
+        <a href="main.html" class="brand">LostNFound</a>
+        <div class="nav-links">
+          <a href="main.html">Home</a>
+          <a
+            href="search.html"
+            style="margin-left: 20px; color: #d1d5db; text-decoration: none"
+            >Search</a
+          >
+          <a href="map.html">Maps</a>
+          <button
+            id="logout-btn"
+            style="
+              background: none;
+              border: none;
+              color: #d1d5db;
+              cursor: pointer;
+              font-size: 16px;
+              margin-left: 20px;
+            "
+          >
+            Logout
+          </button>
+        </div>
+      </div>
+    </nav>
+
+    <!-- MAPS SECTION -->
+    <section id="maps-section">
+      <div class="container">
+        <div class="map-grid">
+          <!-- LEFT: Single Info Panel -->
+          <div class="info-panel">
+            <h2 class="info-title">🚨 BCIT Safety & Security</h2>
+
+            <p class="info-description">
+              BCIT Safety & Security oversees campus security, emergency
+              response, and Lost & Found services. If you’ve misplaced an item
+              on campus, this is where it’s most likely to be returned. Visit or
+              contact the office below for assistance retrieving your
+              belongings.
+            </p>
+
+            <div class="info-details">
+              <p>
+                <strong>📍 Location:</strong> SW01 Building, Room 1060 (Burnaby
+                Campus)
+              </p>
+              <p><strong>📞 Phone:</strong> 604-451-6856 (24 hours)</p>
+              <p>
+                <strong>✉️ Email:</strong>
+                <a href="mailto:safetysecurity@bcit.ca"
+                  >safetysecurity@bcit.ca</a
+                >
+              </p>
+              <p><strong>🕒 Hours:</strong> Open 24 hours, 7 days a week</p>
+            </div>
+
+            <button class="btn" id="directions-btn">
+              🗺️ Get Directions on Google Maps
+            </button>
+          </div>
+
+          <!-- RIGHT: Map -->
+          <div id="map"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="footer-container">
+        <p>LostNFound © 2025 — made by Gurkirit, Jade, and Ray</p>
+      </div>
+    </footer>
+
+    <!-- JS file -->
+    <script src="map1.js"></script>
+  </body>
+</html>

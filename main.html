@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>LostNFound - My BCIT Project</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <!-- Navbar -->
+    <nav class="navbar">
+      <div class="container">
+        <a href="main.html" class="brand">LostNFound</a>
+        <div class="nav-links">
+          <a href="main.html">Home</a>
+          <a
+            href="search.html"
+            style="margin-left: 20px; color: #d1d5db; text-decoration: none"
+            >Search</a
+          >
+          <a href="map.html">Maps</a>
+          <a
+            href="profile.html"
+            style="margin-left: 20px; color: #d1d5db; text-decoration: none"
+            >Profile</a
+          >
+          <button
+            id="logout-btn"
+            style="
+              background: none;
+              border: none;
+              color: #d1d5db;
+              cursor: pointer;
+              font-size: 16px;
+              margin-left: 20px;
+            "
+          >
+            Logout
+          </button>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Slide-out settings tab with submenu -->
+    <div id="settings-tab-container">
+      <div id="settings-hamburger">&#9776;</div>
+      <div id="settings-menu">
+        <a href="settings.html" class="settings-parent">Settings</a>
+        <a href="notifications.html" class="settings-parent notification-tab"
+          >Notifications</a
+        >
+      </div>
+    </div>
+
+    <!-- Main Content -->
+    <section class="dash-container">
+      <!-- Greeting / Hero -->
+      <div class="dash-hero">
+        <div>
+          <h1 id="dash-greeting">Welcome!</h1>
+          <p class="dash-sub">
+            Manage lost & found reports, post new finds, and track activity.
+          </p>
+        </div>
+        <div class="dash-actions">
+          <a class="btn primary" href="report.html">+ Make Posts</a>
+          <a class="btn" href="my-items.html">My Posts</a>
+        </div>
+      </div>
+
+      <div class="core-stack">
+        <div class="panel" id="recent-posts-panel">
+          <div class="panel-header">
+            <h2>Recent Posts</h2>
+            <a class="link" href="search.html">See all</a>
+          </div>
+          <ul class="activity" id="recent-activity">
+            <li>
+              <span class="dot"></span> Could not load posts. Try again later.
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section id="maps-section">
+      <div class="container">
+        <div class="map-grid">
+          <!-- LEFT: Info cards -->
+          <div class="info-grid">
+            <h3 class="info-title">🧭 Recently Lost Items!</h3>
+
+            <!-- Card 1 -->
+            <div class="info-card" data-location="sw01">
+              <h3>📍 JBL Headphones • 3h ago</h3>
+              <p>Black JBL Headphones.</p>
+              <a href="map1.html" class="btn more-info-btn">More Info</a>
+            </div>
+
+            <!-- Card 2 -->
+            <div class="info-card" data-location="library">
+              <h3>📍 Water Bottle • 7h ago</h3>
+              <p>
+                Blue Water Bottle with a silver cap. Has the gatorade logo on
+                it.
+              </p>
+              <a href="map2.html" class="btn more-info-btn">More Info</a>
+            </div>
+
+            <!-- Card 3 -->
+            <div class="info-card" data-location="gymnasium">
+              <h3>📍 Airpods • 20h ago</h3>
+              <p>Airpods with Black hardshell case</p>
+              <a href="map3.html" class="btn more-info-btn">More Info</a>
+            </div>
+          </div>
+
+          <!-- RIGHT: Map -->
+          <div id="map"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="footer-container">
+        <p>LostNFound &copy; 2025 — made by Gurkirit, Jade, and Ray</p>
+      </div>
+    </footer>
+
+    <script type="module" src="src/main.js"></script>
+  </body>
+</html>

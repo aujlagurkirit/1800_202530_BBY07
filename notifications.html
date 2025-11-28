@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Notification Settings - LostNFound</title>
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    /* styles for Notification Settings */
+
+    body {
+      background-color: #f9fafb;
+    }
+
+    .page-header {
+      text-align: center;
+      margin: 50px 0 30px;
+      color: #1e3a8a;
+      font-weight: 700;
+      font-size: 2.8rem;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      letter-spacing: 0.04em;
+    }
+
+    .settings-container {
+      max-width: 600px;
+      margin: 0 auto 80px;
+      background: #ffffff;
+      padding: 40px 50px;
+      border-radius: 14px;
+      box-shadow: 0 10px 30px rgba(15, 23, 42, 0.1);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      color: #1e3a8a;
+      border: 1px solid #e0e7ff;
+      transition: box-shadow 0.3s ease;
+    }
+    .settings-container:hover {
+      box-shadow: 0 12px 40px rgba(15, 23, 42, 0.15);
+    }
+
+    .setting-item {
+      margin-bottom: 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .setting-item label {
+      font-weight: 700;
+      font-size: 1.15rem;
+      flex: 1 1 auto;
+    }
+
+    .setting-item select {
+      flex: 0 0 180px;
+      padding: 8px 12px;
+      font-size: 1rem;
+      border-radius: 8px;
+      border: 1.5px solid #cbd5e1;
+      transition: border-color 0.3s ease;
+      cursor: pointer;
+    }
+
+    .setting-item select:focus {
+      border-color: #3b82f6;
+      outline: none;
+      box-shadow: 0 0 5px rgba(59, 130, 246, 0.5);
+    }
+
+    .checkbox-group {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      margin-left: 10px;
+      flex: 0 0 auto;
+    }
+
+    .checkbox-group label {
+      font-weight: 500;
+      font-size: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .checkbox-group input[type="checkbox"] {
+      cursor: pointer;
+      width: 18px;
+      height: 18px;
+      accent-color: #3b82f6;
+      transition: accent-color 0.3s ease;
+    }
+
+    button.save-btn {
+      width: 100%;
+      background-color: #1e40af;
+      color: #e0e7ff;
+      font-size: 1.25rem;
+      font-weight: 700;
+      padding: 16px 0;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      box-shadow: 0 6px 12px rgba(30, 64, 175, 0.4);
+      transition: background-color 0.3s ease, box-shadow 0.3s ease;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    button.save-btn:hover {
+      background-color: #2563eb;
+      box-shadow: 0 8px 18px rgba(37, 99, 235, 0.6);
+    }
+
+    #status-message {
+      margin-top: 24px;
+      text-align: center;
+      font-weight: 600;
+      font-size: 1.1rem;
+      min-height: 26px;
+      color: #059669;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    /* Notification History Card */
+    .notification-history-card {
+      max-width: 600px;
+      margin: 10px auto 70px;
+      background: #1e40af;
+      color: #e0e7ff;
+      padding: 28px 38px;
+      border-radius: 14px;
+      box-shadow: 0 10px 30px rgba(30, 64, 175, 0.5);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      cursor: pointer;
+      font-size: 1.4rem;
+      font-weight: 700;
+      text-align: center;
+      user-select: none;
+      transition: background-color 0.3s ease, box-shadow 0.3s ease;
+      text-decoration: none;
+      display: block;
+      width: 600px;
+    }
+
+    .notification-history-card:hover,
+    .notification-history-card:focus {
+      background-color: #3b82f6;
+      box-shadow: 0 14px 40px rgba(59, 130, 246, 0.6);
+      outline: none;
+      text-decoration: none;
+    }
+
+    /* Responsive */
+    @media (max-width: 640px) {
+      .settings-container,
+      .notification-history-card {
+        width: 90%;
+        max-width: none;
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      .setting-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+      }
+
+      .setting-item label {
+        flex: none;
+      }
+
+      button.save-btn {
+        font-size: 1.15rem;
+        padding: 14px 0;
+      }
+
+      .notification-history-card {
+        font-size: 1.25rem;
+        padding: 22px 28px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="container">
+      <a href="main.html" class="brand">LostNFound</a>
+      <div class="nav-links">
+        <a href="main.html">Home</a>
+        <a href="search.html" style="margin-left: 20px; color: #d1d5db; text-decoration: none">Search</a>
+        <a href="map.html">Maps</a>
+        <button
+          id="logout-btn"
+          style="
+            background: none;
+            border: none;
+            color: #d1d5db;
+            cursor: pointer;
+            font-size: 16px;
+            margin-left: 20px;
+          "
+        >
+          Logout
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Slide-out settings tab -->
+  <div id="settings-tab-container">
+    <div id="settings-hamburger">&#9776;</div>
+    <div id="settings-menu">
+      <a href="settings.html" class="settings-parent">Settings</a>
+      <a href="notifications.html" class="settings-parent notification-tab">Notifications</a>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <main>
+    <h1 class="page-header">Notification Settings</h1>
+
+    <section class="settings-container">
+      <form id="notification-settings-form">
+        <!-- Delivery method -->
+        <div class="setting-item">
+          <label for="delivery-method">Delivery Method:</label>
+          <select id="delivery-method" name="deliveryMethod" required>
+            <option value="email">Email</option>
+            <option value="push">Push Notification</option>
+            <option value="sms">SMS</option>
+          </select>
+        </div>
+
+        <!-- Frequency -->
+        <div class="setting-item">
+          <label for="frequency">Frequency:</label>
+          <select id="frequency" name="frequency" required>
+            <option value="immediately">Immediately</option>
+            <option value="daily">Daily Summary</option>
+            <option value="weekly">Weekly Summary</option>
+          </select>
+        </div>
+
+        <!-- Notification Types -->
+        <div class="setting-item" style="flex-direction: column; align-items: flex-start;">
+          <label>Notification Types:</label>
+          <div class="checkbox-group">
+            <label><input type="checkbox" name="types" value="lostItemUpdates" checked /> Lost Item Updates</label>
+            <label><input type="checkbox" name="types" value="reminders" /> Reminders</label>
+            <label><input type="checkbox" name="types" value="messages" /> Messages</label>
+          </div>
+        </div>
+
+        <button type="submit" class="save-btn">Save Settings</button>
+        <div id="status-message"></div>
+      </form>
+    </section>
+
+    <a href="notifications-history.html" class="notification-history-card" role="button" tabindex="0">
+      View Notification History
+    </a>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-container">
+      <p>LostNFound &copy; 2025 — made by Gurkirit, Jade, and Ray</p>
+    </div>
+  </footer>
+
+  <script>
+    const form = document.getElementById('notification-settings-form');
+    const statusMessage = document.getElementById('status-message');
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+
+      const formData = new FormData(form);
+      const data = {
+        deliveryMethod: formData.get('deliveryMethod'),
+        frequency: formData.get('frequency'),
+        types: formData.getAll('types'),
+      };
+
+      console.log('Saving Notification Settings:', data);
+
+      statusMessage.textContent = 'Settings saved successfully!';
+      statusMessage.style.color = '#059669'; // green success color
+    });
+  </script>
+</body>
+</html>

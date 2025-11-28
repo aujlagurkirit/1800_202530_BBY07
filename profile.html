@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>User Profile - LostNFound</title>
+    <link rel="stylesheet" href="styles.css" />
+
+    <style>
+      /* Container */
+      .profile-container {
+        max-width: 500px;
+        margin: 40px auto;
+        padding: 30px 40px;
+        background: #fff;
+        border-radius: 10px;
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      }
+
+      .profile-container h1 {
+        text-align: center;
+        margin-bottom: 30px;
+        color: #1e40af;
+        font-weight: 700;
+      }
+
+      /* Form labels */
+      label {
+        display: block;
+        font-weight: 600;
+        margin-bottom: 6px;
+        color: #334155;
+      }
+
+      /* Input fields */
+      input[type="text"],
+      input[type="email"],
+      input[type="tel"] {
+        width: 100%;
+        padding: 12px 15px;
+        margin-bottom: 20px;
+        border: 1.8px solid #cbd5e1;
+        border-radius: 8px;
+        font-size: 15px;
+        transition: border-color 0.3s ease;
+      }
+
+      input[type="text"]:focus,
+      input[type="email"]:focus,
+      input[type="tel"]:focus {
+        border-color: #2563eb;
+        outline: none;
+        box-shadow: 0 0 8px rgba(37, 99, 235, 0.3);
+      }
+
+      /* Disabled inputs */
+      input:disabled {
+        background-color: #f1f5f9;
+        color: #64748b;
+        cursor: not-allowed;
+      }
+
+      /* Buttons */
+      form button {
+        cursor: pointer;
+        padding: 12px 25px;
+        border-radius: 8px;
+        border: none;
+        font-weight: 600;
+        font-size: 16px;
+        margin-right: 10px;
+        transition: background-color 0.3s ease;
+      }
+
+      /* Save button */
+      form button[type="submit"] {
+        background-color: #2563eb;
+        color: white;
+      }
+
+      form button[type="submit"]:hover {
+        background-color: #1e40af;
+      }
+
+      /* Edit button */
+      form button#edit-btn {
+        background-color: #e5e7eb;
+        color: #334155;
+      }
+
+      form button#edit-btn:hover {
+        background-color: #cbd5e1;
+      }
+
+      /* Message styling */
+      p.message {
+        margin-top: 15px;
+        font-weight: 600;
+        font-size: 14px;
+      }
+
+      /* Responsive */
+      @media (max-width: 600px) {
+        .profile-container {
+          margin: 20px;
+          padding: 20px;
+        }
+
+        form button {
+          width: 100%;
+          margin: 8px 0;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- Navbar -->
+    <nav class="navbar">
+      <div class="container">
+        <a href="main.html" class="brand">LostNFound</a>
+        <div class="nav-links">
+          <a href="main.html">Home</a>
+          <a
+            href="search.html"
+            style="margin-left: 20px; color: #d1d5db; text-decoration: none"
+            >Search</a
+          >
+          <a href="map.html">Maps</a>
+          <a
+            href="profile.html"
+            style="margin-left: 20px; color: #d1d5db; text-decoration: none"
+            >Profile</a
+          >
+          <button
+            id="logout-btn"
+            style="
+              background: none;
+              border: none;
+              color: #d1d5db;
+              cursor: pointer;
+              font-size: 16px;
+              margin-left: 20px;
+            "
+          >
+            Logout
+          </button>
+        </div>
+      </div>
+    </nav>
+
+    <section class="profile-container">
+      <h1>Your Profile</h1>
+
+      <form id="profile-form" novalidate>
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" required />
+
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required />
+
+        <label for="phone">Phone Number:</label>
+        <input
+          type="tel"
+          id="phone"
+          name="phone"
+          pattern="[0-9]{10}"
+          required
+        />
+
+        <button type="submit">Save Profile</button>
+        <button type="button" id="edit-btn">Edit</button>
+      </form>
+
+      <p id="message" class="message"></p>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="footer-container">
+        <p>LostNFound &copy; 2025 — made by Gurkirit, Jade, and Ray</p>
+      </div>
+    </footer>
+
+    <!-- Firebase logic -->
+    <script type="module" src="src/main.js"></script>
+  </body>
+</html>
