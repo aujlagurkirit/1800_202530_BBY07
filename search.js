@@ -1,63 +1,107 @@
-// TEMPORARY SAMPLE DATA
-// Later this can come from Firestore.
-// Right now it's just an array so the search page works for demo & grading.
-const lostItems = [
-  {
-    name: "Black North Face Backpack",
-    desc: "Laptop inside. Has BCIT ID tag on zipper.",
-    location: "SE12 Cafeteria",
-    time: "Reported: Oct 25, 2025",
-    keywords: "black backpack bag northface north face laptop bcit id",
-  },
-  {
-    name: "AirPods Pro (Left Earbud Only)",
-    desc: "Found in hallway outside SW01 lab rooms.",
-    location: "SW01 2nd Floor Hallway",
-    time: "Found: Oct 24, 2025",
-    keywords: "airpods airpod pro earbud apple headphones left white",
-  },
-  {
-    name: "Blue Hydro Flask Water Bottle",
-    desc: "Sticker: 'BCIT Aerospace'.",
-    location: "Gym change room",
-    time: "Found: Oct 23, 2025",
-    keywords: "water bottle hydroflask hydro flask blue bottle drink gym",
-  },
-  {
-    name: "Keys with Toyota key fob",
-    desc: "3 keys on a silver ring and a black Toyota fob.",
-    location: "Parking Lot A",
-    time: "Reported: Oct 22, 2025",
-    keywords:
-      "key keys keychain toyota car keys fob black silver ring parking lot",
-  },
-];
+let currentSort = "recent"; // default sort
 
-// grab DOM elements
+const sortOptions = document.querySelectorAll(".sort-card");
+
+sortOptions.forEach((card) => {
+  card.addEventListener("click", () => {
+    // remove active from all
+    sortOptions.forEach((c) => c.classList.remove("active"));
+    // add active to clicked card
+    card.classList.add("active");
+
+    // update current sort
+    currentSort = card.dataset.sort;
+
+    // re-render posts with current filter and sort
+    filterItems(searchInput.value);
+  });
+});
+
+function renderResults(list) {
+  // sort based on currentSort
+  const sortedList = sortItems(list, currentSort);
+
+  resultsContainer.innerHTML = "";
+
+  if (sortedList.length === 0) {
+    resultsInfo.textContent = "No matches found.";
+    return;
+  }
+
+  resultsInfo.textContent = `${sortedList.length} item(s) found`;
+
+  sortedList.forEach((item) => {
+    resultsContainer.appendChild(createResultCard(item));
+  });
+}
+
+// ---------------------------
+// Load posts from localStorage
+// ---------------------------
+let lostItems = JSON.parse(localStorage.getItem("lnf_posts")) || [];
+
+// DOM elements
 const searchInput = document.getElementById("searchInput");
 const resultsInfo = document.getElementById("resultsInfo");
 const resultsContainer = document.getElementById("resultsContainer");
 
-// build one item card
+// Modal elements
+const postModal = document.getElementById("postModal");
+const modalTitle = document.getElementById("modalTitle");
+const modalDesc = document.getElementById("modalDesc");
+const modalLocation = document.getElementById("modalLocation");
+const modalCategory = document.getElementById("modalCategory");
+const modalTime = document.getElementById("modalTime");
+const modalImage = document.getElementById("modalImage");
+const modalClose = document.getElementById("modalClose");
+
+// ---------------------------
+// Create one result card
+// ---------------------------
 function createResultCard(item) {
   const card = document.createElement("div");
   card.classList.add("result-card");
 
+  const timeText = item.createdAt
+    ? `Posted: ${new Date(item.createdAt).toLocaleString()}`
+    : "";
+
   card.innerHTML = `
     <div class="result-top-row">
-      <p class="result-name">${item.name}</p>
+      <p class="result-name">${item.title}</p>
       <p class="result-location">${item.location}</p>
     </div>
-    <p class="result-desc">${item.desc}</p>
-    <p class="result-time">${item.time}</p>
+    <p class="result-desc">${item.description}</p>
+    <p class="result-time">${timeText}</p>
   `;
+
+  // ---------------------------
+  // Open modal on click
+  // ---------------------------
+  card.addEventListener("click", () => {
+    modalTitle.textContent = item.title;
+    modalDesc.textContent = item.description;
+    modalLocation.textContent = item.location;
+    modalCategory.textContent = item.category;
+    modalTime.textContent = timeText;
+
+    if (item.imageUrl) {
+      modalImage.src = item.imageUrl;
+      modalImage.style.display = "block";
+    } else {
+      modalImage.style.display = "none";
+    }
+
+    postModal.style.display = "block";
+  });
 
   return card;
 }
 
-// render many cards
+// ---------------------------
+// Render list of results
+// ---------------------------
 function renderResults(list) {
-  // clear old results
   resultsContainer.innerHTML = "";
 
   if (list.length === 0) {
@@ -68,12 +112,13 @@ function renderResults(list) {
   resultsInfo.textContent = `${list.length} item(s) found`;
 
   list.forEach((item) => {
-    const card = createResultCard(item);
-    resultsContainer.appendChild(card);
+    resultsContainer.appendChild(createResultCard(item));
   });
 }
 
-// filter items by query
+// ---------------------------
+// Search filter
+// ---------------------------
 function filterItems(query) {
   const q = query.toLowerCase().trim();
 
@@ -84,25 +129,44 @@ function filterItems(query) {
 
   const filtered = lostItems.filter((item) => {
     return (
-      item.name.toLowerCase().includes(q) ||
-      item.desc.toLowerCase().includes(q) ||
+      item.title.toLowerCase().includes(q) ||
+      item.description.toLowerCase().includes(q) ||
       item.location.toLowerCase().includes(q) ||
-      item.keywords.toLowerCase().includes(q)
+      item.category.toLowerCase().includes(q)
     );
   });
 
   renderResults(filtered);
 }
 
-// listen to typing
+// ---------------------------
+// Input listener
+// ---------------------------
 searchInput.addEventListener("input", (e) => {
   filterItems(e.target.value);
 });
 
-// show all items at page load
+// ---------------------------
+// First load → show all posts
+// ---------------------------
 renderResults(lostItems);
 
-// Logout button on search.html
+// ---------------------------
+// Modal close functionality
+// ---------------------------
+modalClose.addEventListener("click", () => {
+  postModal.style.display = "none";
+});
+
+window.addEventListener("click", (e) => {
+  if (e.target === postModal) {
+    postModal.style.display = "none";
+  }
+});
+
+// ---------------------------
+// Logout button
+// ---------------------------
 const staticLogoutBtn = document.getElementById("logout-btn");
 if (staticLogoutBtn) {
   staticLogoutBtn.addEventListener("click", () => {
@@ -110,8 +174,6 @@ if (staticLogoutBtn) {
       .then(() => {
         window.location.href = "login.html";
       })
-      .catch((error) => {
-        console.error("Logout error:", error.message);
-      });
+      .catch((error) => console.error("Logout error:", error.message));
   });
 }

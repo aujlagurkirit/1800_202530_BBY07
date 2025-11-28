@@ -38,6 +38,16 @@
 
     <!-- Search Section -->
     <section class="search-section">
+      <div
+        id="sortOptions"
+        style="display: flex; gap: 10px; margin: 10px 0; flex-wrap: wrap"
+      >
+        <div class="sort-card" data-sort="recent">Most Recent</div>
+        <div class="sort-card" data-sort="oldest">Oldest</div>
+        <div class="sort-card" data-sort="az">A → Z</div>
+        <div class="sort-card" data-sort="za">Z → A</div>
+      </div>
+
       <div class="search-header">
         <h1>Find Your Lost Item</h1>
         <a href="main.html" class="back-home-inline">Back to Home</a>
@@ -59,6 +69,19 @@
 
       <div id="resultsContainer" class="results-container">
         <!-- cards go here -->
+      </div>
+
+      <!-- Modal for post details -->
+      <div id="postModal" class="modal">
+        <div class="modal-content">
+          <span id="modalClose" class="close">&times;</span>
+          <h2 id="modalTitle"></h2>
+          <img id="modalImage" style="max-width: 100%; display: none" />
+          <p id="modalDesc"></p>
+          <p><strong>Location:</strong> <span id="modalLocation"></span></p>
+          <p><strong>Category:</strong> <span id="modalCategory"></span></p>
+          <p><strong>Posted:</strong> <span id="modalTime"></span></p>
+        </div>
       </div>
     </section>
 
