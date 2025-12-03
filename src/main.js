@@ -243,40 +243,17 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // === NEW: load recent posts on main dashboard from localStorage ===
+  // === Load recent posts into dashboard (Recent Activity) ===
   const recentList = document.getElementById("recent-activity");
   if (recentList) {
     renderRecentFromFirestore();
   }
+
+  // === Load MAX 3 auto-cards for the maps section ===
+  loadRecentCards();
 });
 
-// ===== Dashboard wiring =====
-const greetEl = document.getElementById("dash-greeting");
-const aEl = (id) => document.getElementById(id);
-
-// we keep stats as demo; don't touch Recent Posts here
-function setDemoStatsAndActivity() {
-  aEl("stat-active") && (aEl("stat-active").textContent = "2");
-  aEl("stat-returned") && (aEl("stat-returned").textContent = "1");
-  aEl("stat-community") && (aEl("stat-community").textContent = "14");
-  aEl("stat-matches") && (aEl("stat-matches").textContent = "3");
-}
-
-try {
-  const name =
-    (window.currentUser &&
-      (window.currentUser.displayName ||
-        window.currentUser.email?.split("@")[0])) ||
-    "there";
-  if (greetEl) greetEl.textContent = `Welcome, ${name}!`;
-  setDemoStatsAndActivity();
-} catch (e) {
-  if (greetEl) greetEl.textContent = "Welcome!";
-  setDemoStatsAndActivity();
-}
-
-// POSTS from firestore
-
+// Utility: convert timestamps to "3h ago" etc.
 function formatRelativeTime(isoString) {
   if (!isoString) return "";
   const d = new Date(isoString);
@@ -292,7 +269,7 @@ function formatRelativeTime(isoString) {
   return d.toLocaleDateString();
 }
 
-// ---------- Recent Posts from Firestore ----------
+// ---------- Recent Posts for Dashboard ----------
 async function renderRecentFromFirestore() {
   const list = document.getElementById("recent-activity");
   if (!list) return;
@@ -320,28 +297,29 @@ async function renderRecentFromFirestore() {
     }
 
     list.innerHTML = "";
+
     snap.forEach((docSnap) => {
       const p = docSnap.data();
       const title = p.title || "Untitled";
       const desc = p.description || "";
-      const loc = p.location || "Unknown location";
+      const loc = p.location || "Unknown";
       const cat = p.category || "Other";
       const when = formatRelativeTime(p.createdAt);
 
       list.insertAdjacentHTML(
         "beforeend",
         `
-        <li>
-          <span class="dot"></span>
-          <div>
-            <strong>${title}</strong><br>
-            <span style="color:#64748b; font-size:0.9rem;">
-              ${loc} · ${cat} · ${when}
-            </span><br>
-            <span>${desc}</span>
-          </div>
-        </li>
-      `
+          <li>
+            <span class="dot"></span>
+            <div>
+              <strong>${title}</strong><br>
+              <span style="color:#64748b; font-size:0.9rem;">
+                ${loc} · ${cat} · ${when}
+              </span><br>
+              <span>${desc}</span>
+            </div>
+          </li>
+        `
       );
     });
   } catch (err) {
@@ -355,180 +333,48 @@ async function renderRecentFromFirestore() {
   }
 }
 
-// -------------------------------
-// Profile Form Logic
-// -------------------------------
-document.addEventListener("DOMContentLoaded", () => {
-  const profileForm = document.getElementById("profile-form");
-  if (!profileForm) return; // Exit if form not found
+// ---------- 🔥 AUTO 3-CARD FIRESTORE FEATURE ----------
+async function loadRecentCards() {
+  const container = document.getElementById("auto-cards");
+  if (!container) return;
 
-  const message = document.createElement("p");
-  profileForm.parentNode.insertBefore(message, profileForm.nextSibling);
+  container.innerHTML = `<p style="color:#64748b;">Loading...</p>`;
 
-  profileForm.addEventListener("submit", async (e) => {
-    e.preventDefault();
+  try {
+    const postsRef = collection(db, "posts");
+    const q = query(postsRef, orderBy("createdAt", "desc"), limit(3));
+    const snap = await getDocs(q);
 
-    const user = auth.currentUser;
-    if (!user) {
-      message.textContent = "You must be logged in to save your profile.";
-      message.style.color = "red";
+    if (snap.empty) {
+      container.innerHTML = `<p style="color:#64748b;">No recent items.</p>`;
       return;
     }
 
-    const username = profileForm.username.value.trim();
-    const email = profileForm.email.value.trim();
-    const phone = profileForm.phone.value.trim();
+    container.innerHTML = "";
 
-    if (!username || !email || !phone) {
-      message.textContent = "Please fill in all fields.";
-      message.style.color = "red";
-      return;
-    }
+    snap.forEach((docSnap) => {
+      const p = docSnap.data();
+      const title = p.title || "Untitled Item";
+      const desc = p.description || "";
+      const loc = p.location || "Unknown";
+      const cat = p.category || "Other";
+      const when = formatRelativeTime(p.createdAt);
 
-    const profileData = { username, email, phone };
+      const cardHTML = `
+        <div class="info-card" data-location="${loc.toLowerCase()}">
+          <h3>📍 ${title} • ${loc}</h3>
+          <p>${desc}</p>
+          <a href="search.html" class="btn more-info-btn">More Info</a>
+        </div>
+      `;
 
-    try {
-      // Save profile data in Firestore under 'profiles/{uid}'
-      await setDoc(doc(db, "profiles", user.uid), profileData);
-
-      message.textContent = "Profile saved successfully!";
-      message.style.color = "green";
-      profileForm.reset();
-    } catch (error) {
-      message.textContent = "Error saving profile: " + error.message;
-      message.style.color = "red";
-      console.error("Firestore Error:", error);
-    }
-  });
-});
-
-document.addEventListener("DOMContentLoaded", () => {
-  const profileForm = document.getElementById("profile-form");
-  const editBtn = document.getElementById("edit-btn");
-
-  if (!profileForm || !editBtn) return;
-
-  const message = document.createElement("p");
-  profileForm.parentNode.insertBefore(message, profileForm.nextSibling);
-
-  const usernameInput = profileForm.username;
-  const emailInput = profileForm.email;
-  const phoneInput = profileForm.phone;
-
-  const auth2 = getAuth();
-  const db2 = getFirestore();
-
-  // Enable/disable inputs (lock/unlock)
-  function setInputsDisabled(disabled) {
-    usernameInput.disabled = disabled;
-    emailInput.disabled = disabled;
-    phoneInput.disabled = disabled;
+      container.insertAdjacentHTML("beforeend", cardHTML);
+    });
+  } catch (err) {
+    console.error("Card load error:", err);
+    container.innerHTML = `<p style="color:#b91c1c;">Failed to load cards.</p>`;
   }
-
-  // Initially lock the inputs
-  setInputsDisabled(true);
-
-  // Load saved profile on page load
-  onAuthStateChanged(auth2, async (user) => {
-    if (!user) {
-      message.textContent = "You must be logged in to view profile.";
-      message.style.color = "red";
-      setInputsDisabled(true);
-      profileForm.style.display = "none";
-      editBtn.style.display = "none";
-      return;
-    }
-
-    profileForm.style.display = "block";
-    editBtn.style.display = "inline-block";
-
-    try {
-      const docRef = doc(db2, "profiles", user.uid);
-      const docSnap = await getDoc(docRef);
-
-      if (docSnap.exists()) {
-        const data = docSnap.data();
-        usernameInput.value = data.username || "";
-        emailInput.value = data.email || "";
-        phoneInput.value = data.phone || "";
-        setInputsDisabled(true);
-      } else {
-        // No data yet, allow user to fill form
-        setInputsDisabled(false);
-      }
-    } catch (error) {
-      message.textContent = "Error loading profile: " + error.message;
-      message.style.color = "red";
-    }
-  });
-
-  // Edit button toggles input enabled state
-  editBtn.addEventListener("click", () => {
-    if (usernameInput.disabled) {
-      // Unlock inputs to edit
-      setInputsDisabled(false);
-      editBtn.textContent = "Cancel";
-    } else {
-      // Cancel editing: reload data and lock inputs
-      onAuthStateChanged(auth2, async (user) => {
-        if (!user) return;
-
-        const docRef = doc(db2, "profiles", user.uid);
-        const docSnap = await getDoc(docRef);
-
-        if (docSnap.exists()) {
-          const data = docSnap.data();
-          usernameInput.value = data.username || "";
-          emailInput.value = data.email || "";
-          phoneInput.value = data.phone || "";
-        } else {
-          usernameInput.value = "";
-          emailInput.value = "";
-          phoneInput.value = "";
-        }
-
-        setInputsDisabled(true);
-        editBtn.textContent = "Edit";
-        message.textContent = "";
-      });
-    }
-  });
-
-  profileForm.addEventListener("submit", async (e) => {
-    e.preventDefault();
-
-    const user = auth2.currentUser;
-    if (!user) {
-      message.textContent = "You must be logged in to save your profile.";
-      message.style.color = "red";
-      return;
-    }
-
-    const username = usernameInput.value.trim();
-    const email = emailInput.value.trim();
-    const phone = phoneInput.value.trim();
-
-    if (!username || !email || !phone) {
-      message.textContent = "Please fill in all fields.";
-      message.style.color = "red";
-      return;
-    }
-
-    const profileData = { username, email, phone };
-
-    try {
-      await setDoc(doc(db2, "profiles", user.uid), profileData);
-      message.textContent = "Profile saved successfully!";
-      message.style.color = "green";
-      setInputsDisabled(true);
-      editBtn.textContent = "Edit";
-    } catch (error) {
-      message.textContent = "Error saving profile: " + error.message;
-      message.style.color = "red";
-      console.error(error);
-    }
-  });
-});
+}
 
 import { initMap } from "../map.js";
 

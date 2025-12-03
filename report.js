@@ -11,7 +11,7 @@ import {
   addDoc,
 } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
 
-// Same config as main.js
+// Firebase configuration
 const firebaseConfig = {
   apiKey: "AIzaSyCA7rXIeGG7iP181YWpPXfjjQjKemmWfyw",
   authDomain: "lostnfound-67ee0.firebaseapp.com",
@@ -35,6 +35,7 @@ const setMsg = (t, cls = "") => {
   }
 };
 
+// Convert file to Base64
 function readFileAsDataURL(file) {
   return new Promise((resolve, reject) => {
     const fr = new FileReader();
@@ -60,10 +61,8 @@ if (form) {
     const title = $("#title").value.trim();
     const description = $("#description").value.trim();
     const category = $("#category").value;
-    const location = $("#location").value.trim();
-    const file = /** @type {HTMLInputElement} */ (
-      document.getElementById("photo")
-    ).files?.[0];
+    const location = $("#location").value; // dropdown value
+    const file = document.getElementById("photo").files?.[0];
 
     if (!title || !description || !category || !location) {
       setMsg("Please fill all required fields.", "err");
@@ -81,7 +80,6 @@ if (form) {
     try {
       let imageDataUrl = null;
       if (file) {
-        // NOTE: Firestore has size limits; use small images for this project
         imageDataUrl = await readFileAsDataURL(file);
       }
 
@@ -93,8 +91,8 @@ if (form) {
         status: "active",
         ownerUid: user.uid,
         ownerEmail: user.email || null,
-        createdAt: new Date().toISOString(), // stored as ISO string for easy sorting
-        imageUrl: imageDataUrl, // optional
+        createdAt: new Date().toISOString(),
+        imageUrl: imageDataUrl,
       };
 
       await addDoc(collection(db, "posts"), post);

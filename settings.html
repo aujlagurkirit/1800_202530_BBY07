@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Settings - LostNFound</title>
-  <link rel="stylesheet" href="styles.css" />
-</head>
-<body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Settings - LostNFound</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
     <nav class="navbar">
       <div class="container">
         <a href="main.html" class="brand">LostNFound</a>
@@ -17,7 +17,6 @@
             style="margin-left: 20px; color: #d1d5db; text-decoration: none"
             >Search</a
           >
-          <a href="map.html">Maps</a>
           <button
             id="logout-btn"
             style="
@@ -35,24 +34,24 @@
       </div>
     </nav>
     <a href="main.html" class="back-home-link">Back to Home</a>
-  <div class="settings-container">
-    <h2>Settings</h2>
+    <div class="settings-container">
+      <h2>Settings</h2>
 
-    <div class="setting-item">
-      <label for="notifications-toggle">Enable Notifications</label>
-      <label class="switch">
-        <input type="checkbox" id="notifications-toggle" />
-        <span class="slider"></span>
-      </label>
+      <div class="setting-item">
+        <label for="notifications-toggle">Enable Notifications</label>
+        <label class="switch">
+          <input type="checkbox" id="notifications-toggle" />
+          <span class="slider"></span>
+        </label>
+      </div>
+
+      <button id="change-password-btn">Change Password</button>
+      <button id="privacy-settings-btn">Privacy Settings</button>
+      <button id="help-btn">Help & Support</button>
+
+      <p id="status-message"></p>
     </div>
 
-    <button id="change-password-btn">Change Password</button>
-    <button id="privacy-settings-btn">Privacy Settings</button>
-    <button id="help-btn">Help & Support</button>
-
-    <p id="status-message"></p>
-  </div>
-
-  <script type="module" src="src/main.js"></script>
-</body>
+    <script type="module" src="src/main.js"></script>
+  </body>
 </html>

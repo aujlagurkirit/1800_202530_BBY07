@@ -6,8 +6,6 @@
     <title>Make a Post — LostNFound</title>
 
     <link rel="stylesheet" href="styles.css" />
-    <!-- Optional: if you had a separate report.css; safe to omit if styles.css already contains the form styles -->
-    <!-- <link rel="stylesheet" href="report.css" /> -->
   </head>
   <body>
     <!-- Navbar -->
@@ -58,11 +56,22 @@
               <option>Other</option>
             </select>
           </div>
+
           <div>
             <label for="location"
               >Location (where found)<span class="badge-req">*</span></label
             >
-            <input id="location" name="location" class="input" required />
+            <select id="location" name="location" class="select" required>
+              <option value="">Select…</option>
+              <option value="SW01">SW01</option>
+              <option value="SW02">SW02</option>
+              <option value="SW03">SW03</option>
+              <option value="SW05">SW05</option>
+              <option value="SE12">SE12</option>
+              <option value="Library">Library</option>
+              <option value="Tim Hortons">Tim Hortons</option>
+              <option value="Gymnasium">Gymnasium</option>
+            </select>
           </div>
         </div>
 
@@ -88,7 +97,7 @@
       </div>
     </footer>
 
-    <!-- Load the submit logic -->
+    <!-- Load submit logic -->
     <script type="module" src="report.js"></script>
   </body>
 </html>
