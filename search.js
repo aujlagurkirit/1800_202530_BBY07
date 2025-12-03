@@ -1,46 +1,40 @@
-let currentSort = "recent"; // default sort
+// search.js — load posts from Firestore instead of localStorage
 
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
+import {
+  getAuth,
+  onAuthStateChanged,
+  signOut,
+} from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
+import {
+  getFirestore,
+  collection,
+  getDocs,
+  query,
+  orderBy,
+} from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
+
+// Same config as main.js
+const firebaseConfig = {
+  apiKey: "AIzaSyCA7rXIeGG7iP181YWpPXfjjQjKemmWfyw",
+  authDomain: "lostnfound-67ee0.firebaseapp.com",
+  projectId: "lostnfound-67ee0",
+  storageBucket: "lostnfound-67ee0.firebasestorage.app",
+  messagingSenderId: "194790650701",
+  appId: "1:194790650701:web:97d7fd597cb2350711bd04",
+  measurementId: "G-LB257QGLV4",
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+// ----- State -----
+let allPosts = [];
+let currentSort = "recent";
+
+// ----- DOM -----
 const sortOptions = document.querySelectorAll(".sort-card");
-
-sortOptions.forEach((card) => {
-  card.addEventListener("click", () => {
-    // remove active from all
-    sortOptions.forEach((c) => c.classList.remove("active"));
-    // add active to clicked card
-    card.classList.add("active");
-
-    // update current sort
-    currentSort = card.dataset.sort;
-
-    // re-render posts with current filter and sort
-    filterItems(searchInput.value);
-  });
-});
-
-function renderResults(list) {
-  // sort based on currentSort
-  const sortedList = sortItems(list, currentSort);
-
-  resultsContainer.innerHTML = "";
-
-  if (sortedList.length === 0) {
-    resultsInfo.textContent = "No matches found.";
-    return;
-  }
-
-  resultsInfo.textContent = `${sortedList.length} item(s) found`;
-
-  sortedList.forEach((item) => {
-    resultsContainer.appendChild(createResultCard(item));
-  });
-}
-
-// ---------------------------
-// Load posts from localStorage
-// ---------------------------
-let lostItems = JSON.parse(localStorage.getItem("lnf_posts")) || [];
-
-// DOM elements
 const searchInput = document.getElementById("searchInput");
 const resultsInfo = document.getElementById("resultsInfo");
 const resultsContainer = document.getElementById("resultsContainer");
@@ -55,9 +49,68 @@ const modalTime = document.getElementById("modalTime");
 const modalImage = document.getElementById("modalImage");
 const modalClose = document.getElementById("modalClose");
 
-// ---------------------------
-// Create one result card
-// ---------------------------
+// Logout button
+const staticLogoutBtn = document.getElementById("logout-btn");
+if (staticLogoutBtn) {
+  staticLogoutBtn.addEventListener("click", () => {
+    signOut(auth)
+      .then(() => {
+        window.location.href = "login.html";
+      })
+      .catch((error) => console.error("Logout error:", error.message));
+  });
+}
+
+// ----- Helpers -----
+function formatRelativeTime(isoString) {
+  if (!isoString) return "";
+  const d = new Date(isoString);
+  if (Number.isNaN(d.getTime())) return "";
+  const diffSec = (Date.now() - d.getTime()) / 1000;
+
+  if (diffSec < 60) return "just now";
+  if (diffSec < 3600) return `${Math.floor(diffSec / 60)}m ago`;
+  if (diffSec < 86400) return `${Math.floor(diffSec / 3600)}h ago`;
+  const days = Math.floor(diffSec / 86400);
+  if (days === 1) return "1 day ago";
+  if (days < 7) return `${days} days ago`;
+  return d.toLocaleDateString();
+}
+
+function sortItems(list, sortKey) {
+  const arr = [...list];
+  if (sortKey === "recent") {
+    return arr.sort(
+      (a, b) =>
+        new Date(b.createdAt || 0).getTime() -
+        new Date(a.createdAt || 0).getTime()
+    );
+  }
+  if (sortKey === "oldest") {
+    return arr.sort(
+      (a, b) =>
+        new Date(a.createdAt || 0).getTime() -
+        new Date(b.createdAt || 0).getTime()
+    );
+  }
+  if (sortKey === "az") {
+    return arr.sort((a, b) =>
+      (a.title || "").localeCompare(b.title || "", undefined, {
+        sensitivity: "base",
+      })
+    );
+  }
+  if (sortKey === "za") {
+    return arr.sort((a, b) =>
+      (b.title || "").localeCompare(a.title || "", undefined, {
+        sensitivity: "base",
+      })
+    );
+  }
+  return arr;
+}
+
+// ----- Card / Modal -----
 function createResultCard(item) {
   const card = document.createElement("div");
   card.classList.add("result-card");
@@ -68,22 +121,21 @@ function createResultCard(item) {
 
   card.innerHTML = `
     <div class="result-top-row">
-      <p class="result-name">${item.title}</p>
-      <p class="result-location">${item.location}</p>
+      <p class="result-name">${item.title || "Untitled"}</p>
+      <p class="result-location">${item.location || "Unknown location"}</p>
     </div>
-    <p class="result-desc">${item.description}</p>
+    <p class="result-desc">${item.description || ""}</p>
     <p class="result-time">${timeText}</p>
   `;
 
-  // ---------------------------
-  // Open modal on click
-  // ---------------------------
   card.addEventListener("click", () => {
-    modalTitle.textContent = item.title;
-    modalDesc.textContent = item.description;
-    modalLocation.textContent = item.location;
-    modalCategory.textContent = item.category;
-    modalTime.textContent = timeText;
+    modalTitle.textContent = item.title || "Untitled";
+    modalDesc.textContent = item.description || "";
+    modalLocation.textContent = item.location || "Unknown location";
+    modalCategory.textContent = item.category || "Other";
+    modalTime.textContent = item.createdAt
+      ? `${timeText} (${formatRelativeTime(item.createdAt)})`
+      : "";
 
     if (item.imageUrl) {
       modalImage.src = item.imageUrl;
@@ -98,65 +150,103 @@ function createResultCard(item) {
   return card;
 }
 
-// ---------------------------
-// Render list of results
-// ---------------------------
 function renderResults(list) {
+  const sortedList = sortItems(list, currentSort);
   resultsContainer.innerHTML = "";
 
-  if (list.length === 0) {
+  if (!sortedList.length) {
     resultsInfo.textContent = "No matches found.";
     return;
   }
 
-  resultsInfo.textContent = `${list.length} item(s) found`;
+  resultsInfo.textContent = `${sortedList.length} item(s) found`;
 
-  list.forEach((item) => {
+  sortedList.forEach((item) => {
     resultsContainer.appendChild(createResultCard(item));
   });
 }
 
-// ---------------------------
-// Search filter
-// ---------------------------
+// ----- Filter -----
 function filterItems(query) {
   const q = query.toLowerCase().trim();
 
   if (q === "") {
-    renderResults(lostItems);
+    renderResults(allPosts);
     return;
   }
 
-  const filtered = lostItems.filter((item) => {
+  const filtered = allPosts.filter((item) => {
+    const title = (item.title || "").toLowerCase();
+    const desc = (item.description || "").toLowerCase();
+    const loc = (item.location || "").toLowerCase();
+    const cat = (item.category || "").toLowerCase();
+
     return (
-      item.title.toLowerCase().includes(q) ||
-      item.description.toLowerCase().includes(q) ||
-      item.location.toLowerCase().includes(q) ||
-      item.category.toLowerCase().includes(q)
+      title.includes(q) ||
+      desc.includes(q) ||
+      loc.includes(q) ||
+      cat.includes(q)
     );
   });
 
   renderResults(filtered);
 }
 
-// ---------------------------
-// Input listener
-// ---------------------------
-searchInput.addEventListener("input", (e) => {
-  filterItems(e.target.value);
+// ----- Load from Firestore -----
+async function loadPostsFromFirestore() {
+  resultsInfo.textContent = "Loading posts...";
+
+  try {
+    const postsRef = collection(db, "posts");
+    const q = query(postsRef, orderBy("createdAt", "desc"));
+    const snap = await getDocs(q);
+
+    allPosts = [];
+    snap.forEach((docSnap) => {
+      allPosts.push({ id: docSnap.id, ...docSnap.data() });
+    });
+
+    if (!allPosts.length) {
+      resultsInfo.textContent = "No posts yet. Be the first to make one.";
+      resultsContainer.innerHTML = "";
+      return;
+    }
+
+    renderResults(allPosts);
+  } catch (err) {
+    console.error("Error loading posts:", err);
+    resultsInfo.textContent = "Could not load posts. Please try again later.";
+  }
+}
+
+// ----- Event wiring -----
+sortOptions.forEach((card) => {
+  card.addEventListener("click", () => {
+    const wasActive = card.classList.contains("active");
+
+    // If already active → unselect & reset sort
+    if (wasActive) {
+      card.classList.remove("active");
+      currentSort = "recent"; // default
+      renderResults(allPosts);
+      return;
+    }
+
+    // Otherwise → activate this card
+    sortOptions.forEach((c) => c.classList.remove("active"));
+    card.classList.add("active");
+
+    currentSort = card.dataset.sort || "recent";
+    filterItems(searchInput.value);
+  });
 });
 
-// ---------------------------
-// First load → show all posts
-// ---------------------------
-renderResults(lostItems);
-
-// ---------------------------
-// Modal close functionality
-// ---------------------------
-modalClose.addEventListener("click", () => {
-  postModal.style.display = "none";
-});
+// Modal close
+if (modalClose) {
+  modalClose.addEventListener("click", () => {
+    postModal.style.display = "none";
+  });
+}
 
 window.addEventListener("click", (e) => {
   if (e.target === postModal) {
@@ -164,16 +254,11 @@ window.addEventListener("click", (e) => {
   }
 });
 
-// ---------------------------
-// Logout button
-// ---------------------------
-const staticLogoutBtn = document.getElementById("logout-btn");
-if (staticLogoutBtn) {
-  staticLogoutBtn.addEventListener("click", () => {
-    signOut(auth)
-      .then(() => {
-        window.location.href = "login.html";
-      })
-      .catch((error) => console.error("Logout error:", error.message));
-  });
-}
+// ----- Auth guard + initial load -----
+onAuthStateChanged(auth, (user) => {
+  if (!user) {
+    window.location.href = "login.html";
+    return;
+  }
+  loadPostsFromFirestore();
+});

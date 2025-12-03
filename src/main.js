@@ -13,6 +13,11 @@ import {
   doc,
   getDoc,
   setDoc,
+  collection,
+  getDocs,
+  query,
+  orderBy,
+  limit,
 } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
 
 const firebaseConfig = {
@@ -241,7 +246,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // === NEW: load recent posts on main dashboard from localStorage ===
   const recentList = document.getElementById("recent-activity");
   if (recentList) {
-    renderRecentFromStorage();
+    renderRecentFromFirestore();
   }
 });
 
@@ -270,22 +275,7 @@ try {
   setDemoStatsAndActivity();
 }
 
-// ---------- NEW HELPERS FOR RECENT POSTS (LOCALSTORAGE) ----------
-function loadPostsFromStorage() {
-  try {
-    const raw = localStorage.getItem("lnf_posts");
-    const arr = raw ? JSON.parse(raw) : [];
-    if (!Array.isArray(arr)) return [];
-    // newest first
-    return arr.sort((a, b) => {
-      const da = new Date(a.createdAt || 0).getTime();
-      const db = new Date(b.createdAt || 0).getTime();
-      return db - da;
-    });
-  } catch {
-    return [];
-  }
-}
+// POSTS from firestore
 
 function formatRelativeTime(isoString) {
   if (!isoString) return "";
@@ -302,46 +292,67 @@ function formatRelativeTime(isoString) {
   return d.toLocaleDateString();
 }
 
-function renderRecentFromStorage() {
+// ---------- Recent Posts from Firestore ----------
+async function renderRecentFromFirestore() {
   const list = document.getElementById("recent-activity");
   if (!list) return;
 
-  const posts = loadPostsFromStorage();
+  list.innerHTML = `
+    <li>
+      <span class="dot"></span>
+      <div>Loading posts...</div>
+    </li>
+  `;
 
-  if (!posts.length) {
+  try {
+    const postsRef = collection(db, "posts");
+    const q = query(postsRef, orderBy("createdAt", "desc"), limit(5));
+    const snap = await getDocs(q);
+
+    if (snap.empty) {
+      list.innerHTML = `
+        <li>
+          <span class="dot"></span>
+          <div>No posts yet. Be the first to make one.</div>
+        </li>
+      `;
+      return;
+    }
+
+    list.innerHTML = "";
+    snap.forEach((docSnap) => {
+      const p = docSnap.data();
+      const title = p.title || "Untitled";
+      const desc = p.description || "";
+      const loc = p.location || "Unknown location";
+      const cat = p.category || "Other";
+      const when = formatRelativeTime(p.createdAt);
+
+      list.insertAdjacentHTML(
+        "beforeend",
+        `
+        <li>
+          <span class="dot"></span>
+          <div>
+            <strong>${title}</strong><br>
+            <span style="color:#64748b; font-size:0.9rem;">
+              ${loc} · ${cat} · ${when}
+            </span><br>
+            <span>${desc}</span>
+          </div>
+        </li>
+      `
+      );
+    });
+  } catch (err) {
+    console.error("Error loading recent posts:", err);
     list.innerHTML = `
       <li>
         <span class="dot"></span>
-        <div>No posts yet. Be the first to make one.</div>
+        <div style="color:#b91c1c;">Could not load posts. Try again later.</div>
       </li>
     `;
-    return;
   }
-
-  list.innerHTML = "";
-  posts.slice(0, 5).forEach((p) => {
-    const title = p.title || "Untitled";
-    const desc = p.description || "";
-    const loc = p.location || "Unknown location";
-    const cat = p.category || "Other";
-    const when = formatRelativeTime(p.createdAt);
-
-    list.insertAdjacentHTML(
-      "beforeend",
-      `
-      <li>
-        <span class="dot"></span>
-        <div>
-          <strong>${title}</strong><br>
-          <span style="color:#64748b; font-size:0.9rem;">
-            ${loc} · ${cat} · ${when}
-          </span><br>
-          <span>${desc}</span>
-        </div>
-      </li>
-    `
-    );
-  });
 }
 
 // -------------------------------

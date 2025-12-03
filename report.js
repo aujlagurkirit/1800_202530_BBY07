@@ -1,12 +1,17 @@
-// report.js — save post locally (no Firestore) then redirect to main.html
+// report.js — save post to Firestore, then redirect to main.html
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
 import {
   getAuth,
   onAuthStateChanged,
 } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
+import {
+  getFirestore,
+  collection,
+  addDoc,
+} from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
 
-// Auth only (same config as main.js)
+// Same config as main.js
 const firebaseConfig = {
   apiKey: "AIzaSyCA7rXIeGG7iP181YWpPXfjjQjKemmWfyw",
   authDomain: "lostnfound-67ee0.firebaseapp.com",
@@ -16,8 +21,10 @@ const firebaseConfig = {
   appId: "1:194790650701:web:97d7fd597cb2350711bd04",
   measurementId: "G-LB257QGLV4",
 };
-initializeApp(firebaseConfig);
-const auth = getAuth();
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
 
 const $ = (s) => document.querySelector(s);
 const msg = $("#form-msg");
@@ -28,17 +35,6 @@ const setMsg = (t, cls = "") => {
   }
 };
 
-function loadPosts() {
-  try {
-    return JSON.parse(localStorage.getItem("lnf_posts") || "[]");
-  } catch {
-    return [];
-  }
-}
-function savePosts(arr) {
-  localStorage.setItem("lnf_posts", JSON.stringify(arr));
-}
-
 function readFileAsDataURL(file) {
   return new Promise((resolve, reject) => {
     const fr = new FileReader();
@@ -48,7 +44,7 @@ function readFileAsDataURL(file) {
   });
 }
 
-// optional auth guard (keep if you still use login)
+// Require login for this page
 onAuthStateChanged(auth, (user) => {
   if (!user) window.location.href = "login.html";
 });
@@ -60,7 +56,7 @@ if (form) {
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
 
-    const user = auth.currentUser; // can be null if you removed auth guard
+    const user = auth.currentUser;
     const title = $("#title").value.trim();
     const description = $("#description").value.trim();
     const category = $("#category").value;
@@ -74,32 +70,34 @@ if (form) {
       return;
     }
 
+    if (!user) {
+      setMsg("You must be logged in to submit a post.", "err");
+      return;
+    }
+
     submitBtn.disabled = true;
     setMsg("Submitting…");
 
     try {
       let imageDataUrl = null;
       if (file) {
-        // WARNING: localStorage has size limits; small images only
+        // NOTE: Firestore has size limits; use small images for this project
         imageDataUrl = await readFileAsDataURL(file);
       }
 
       const post = {
-        id: crypto.randomUUID ? crypto.randomUUID() : String(Date.now()),
         title,
         description,
         category,
         location,
         status: "active",
-        ownerUid: user?.uid || null,
-        ownerEmail: user?.email || null,
-        createdAt: new Date().toISOString(),
-        imageUrl: imageDataUrl, // stored inline (optional)
+        ownerUid: user.uid,
+        ownerEmail: user.email || null,
+        createdAt: new Date().toISOString(), // stored as ISO string for easy sorting
+        imageUrl: imageDataUrl, // optional
       };
 
-      const posts = loadPosts();
-      posts.push(post);
-      savePosts(posts);
+      await addDoc(collection(db, "posts"), post);
 
       setMsg("Post submitted!", "ok");
       window.location.href = "main.html";
