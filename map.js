@@ -1,22 +1,30 @@
-// Google Maps initialization
+// map.js
+// Modern Google Maps loader (no callback)
+import { Loader } from "https://cdn.jsdelivr.net/npm/@googlemaps/js-api-loader@1.16.2/+esm";
+
+const loader = new Loader({
+  apiKey: "AIzaSyBJzVaa2VGL0QBU-5R9hYKZTRBScwGnL5o",
+  version: "weekly",
+  libraries: ["marker"],
+  mapId: "3cac6ee76aa6116810dde040", // ✅ YOUR MAP ID
+});
+
 let map;
 let markers = {};
-let infoWindow;
+let infoWindows = {};
 
-function initMap() {
-  // Default center (BCIT Burnaby Campus)
+export async function initMap() {
+  const google = await loader.load();
+
   const defaultCenter = { lat: 49.2502, lng: -123.0018 };
 
   map = new google.maps.Map(document.getElementById("map"), {
     center: defaultCenter,
     zoom: 16,
-    mapTypeControl: false,
-    streetViewControl: false,
+    mapId: "3cac6ee76aa6116810dde040", // IMPORTANT
+    disableDefaultUI: false,
   });
 
-  infoWindow = new google.maps.InfoWindow();
-
-  // Define BCIT lost & found locations
   const locations = {
     sw01: {
       position: { lat: 49.25127479449927, lng: -123.0024951386435 },
@@ -35,54 +43,57 @@ function initMap() {
     },
   };
 
-  // Create markers for all locations
+  // Create markers
   for (const key in locations) {
     const loc = locations[key];
-    const marker = new google.maps.Marker({
+
+    const popup = new google.maps.InfoWindow({
+      content: `<b>${loc.name}</b><br>${loc.details}`,
+    });
+    infoWindows[key] = popup;
+
+    const marker = new google.maps.marker.AdvancedMarkerElement({
+      map,
       position: loc.position,
-      map: map,
       title: loc.name,
     });
 
-    // Marker click → info window + prompt for Google Maps directions
-    marker.addListener("click", () => {
-      infoWindow.setContent(`<b>${loc.name}</b><br>${loc.details}`);
-      infoWindow.open(map, marker);
-      map.panTo(loc.position);
+    markers[key] = marker;
 
-      // Prompt user for navigation
-      const confirmDirections = confirm(
-        `Would you like to open Google Maps directions to ${loc.name}?`
-      );
-      if (confirmDirections) {
+    marker.addListener("click", () => {
+      popup.open({ map, anchor: marker });
+
+      map.panTo(loc.position);
+      map.setZoom(18);
+
+      if (confirm(`Open Google Maps directions to ${loc.name}?`)) {
         const { lat, lng } = loc.position;
-        const url = `https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}`;
-        window.open(url, "_blank");
+        window.open(
+          `https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}`,
+          "_blank"
+        );
       }
     });
-
-    markers[key] = marker;
   }
 
-  // Info card click → zoom and pan only (no prompt)
+  // Card click → focus
   document.querySelectorAll(".info-card").forEach((card) => {
     card.addEventListener("click", () => {
-      const id = card.dataset.location;
-      focusLocation(id);
+      focusLocation(card.dataset.location);
     });
   });
 }
 
-// Centers and zooms into a location (for info card clicks only)
-function focusLocation(id) {
+export function focusLocation(id) {
   const marker = markers[id];
-  if (marker) {
-    const position = marker.getPosition();
-    map.panTo(position);
-    map.setZoom(18);
+  const popup = infoWindows[id];
 
-    // Just open info window, NO Google Maps prompt
-    infoWindow.setContent(`<b>${marker.title}</b>`);
-    infoWindow.open(map, marker);
-  }
+  if (!marker) return;
+
+  const pos = marker.position;
+
+  map.panTo(pos);
+  map.setZoom(18);
+
+  popup.open({ map, anchor: marker });
 }
