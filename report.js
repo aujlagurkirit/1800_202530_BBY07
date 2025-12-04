@@ -1,4 +1,4 @@
-// report.js — save post to Firestore, then redirect to main.html
+// report.js
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
 import {
@@ -35,7 +35,6 @@ const setMsg = (t, cls = "") => {
   }
 };
 
-// Convert file to Base64
 function readFileAsDataURL(file) {
   return new Promise((resolve, reject) => {
     const fr = new FileReader();
@@ -45,7 +44,6 @@ function readFileAsDataURL(file) {
   });
 }
 
-// Require login for this page
 onAuthStateChanged(auth, (user) => {
   if (!user) window.location.href = "login.html";
 });
@@ -61,7 +59,7 @@ if (form) {
     const title = $("#title").value.trim();
     const description = $("#description").value.trim();
     const category = $("#category").value;
-    const location = $("#location").value; // dropdown value
+    const location = $("#location").value;
     const file = document.getElementById("photo").files?.[0];
 
     if (!title || !description || !category || !location) {

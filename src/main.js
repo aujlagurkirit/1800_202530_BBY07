@@ -86,9 +86,7 @@ function logout() {
   return signOut(auth);
 }
 
-onAuthStateChanged(auth, (user) => {
-  // You can place page-wide logic here if needed
-});
+onAuthStateChanged(auth, (user) => {});
 
 document.addEventListener("DOMContentLoaded", () => {
   setupDynamicNavbar();
@@ -154,7 +152,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // Logout button on main.html (static navbar version)
+  // Logout button on main.html
   const staticLogoutBtn = document.getElementById("logout-btn");
   if (staticLogoutBtn) {
     staticLogoutBtn.addEventListener("click", () => {
@@ -173,7 +171,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const statusMessage = document.getElementById("status-message");
 
   if (toggle && statusMessage) {
-    toggle.disabled = true; // disable toggle until loaded
+    toggle.disabled = true;
 
     onAuthStateChanged(auth, async (user) => {
       if (!user) {
@@ -200,19 +198,19 @@ document.addEventListener("DOMContentLoaded", () => {
         statusMessage.textContent = "Error loading settings.";
         console.error(error);
       } finally {
-        toggle.disabled = false; // enable toggle after loading
+        toggle.disabled = false;
       }
     });
 
     toggle.addEventListener("change", async () => {
-      if (toggle.disabled) return; // ignore if disabled
+      if (toggle.disabled) return;
 
-      toggle.disabled = true; // disable during save
+      toggle.disabled = true;
 
       const user = auth.currentUser;
       if (!user) {
         alert("You must be logged in to change notification settings.");
-        toggle.checked = !toggle.checked; // revert UI
+        toggle.checked = !toggle.checked;
         toggle.disabled = false;
         return;
       }
@@ -233,27 +231,25 @@ document.addEventListener("DOMContentLoaded", () => {
         statusMessage.textContent = "Notification settings updated.";
       } catch (err) {
         alert("Failed to save settings. Please try again.");
-        toggle.checked = !toggle.checked; // revert UI
+        toggle.checked = !toggle.checked;
         statusMessage.style.color = "red";
         statusMessage.textContent = "Error saving settings.";
         console.error(err);
       } finally {
-        toggle.disabled = false; // re-enable toggle
+        toggle.disabled = false;
       }
     });
   }
 
-  // === Load recent posts into dashboard (Recent Activity) ===
+  // Loads recent posts in dashboard
   const recentList = document.getElementById("recent-activity");
   if (recentList) {
     renderRecentFromFirestore();
   }
 
-  // === Load MAX 3 auto-cards for the maps section ===
   loadRecentCards();
 });
 
-// Utility: convert timestamps to "3h ago" etc.
 function formatRelativeTime(isoString) {
   if (!isoString) return "";
   const d = new Date(isoString);
@@ -269,7 +265,7 @@ function formatRelativeTime(isoString) {
   return d.toLocaleDateString();
 }
 
-// ---------- Recent Posts for Dashboard ----------
+// Recent post for dashboard
 async function renderRecentFromFirestore() {
   const list = document.getElementById("recent-activity");
   if (!list) return;
@@ -333,7 +329,6 @@ async function renderRecentFromFirestore() {
   }
 }
 
-// ---------- 🔥 AUTO 3-CARD FIRESTORE FEATURE ----------
 async function loadRecentCards() {
   const container = document.getElementById("auto-cards");
   if (!container) return;

@@ -1,4 +1,4 @@
-// search.js — load posts from Firestore instead of localStorage
+// search.js
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
 import {
@@ -14,7 +14,7 @@ import {
   orderBy,
 } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
 
-// Same config as main.js
+// firebase configuration
 const firebaseConfig = {
   apiKey: "AIzaSyCA7rXIeGG7iP181YWpPXfjjQjKemmWfyw",
   authDomain: "lostnfound-67ee0.firebaseapp.com",
@@ -29,17 +29,14 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-// ----- State -----
 let allPosts = [];
 let currentSort = "recent";
 
-// ----- DOM -----
 const sortOptions = document.querySelectorAll(".sort-card");
 const searchInput = document.getElementById("searchInput");
 const resultsInfo = document.getElementById("resultsInfo");
 const resultsContainer = document.getElementById("resultsContainer");
 
-// Modal elements
 const postModal = document.getElementById("postModal");
 const modalTitle = document.getElementById("modalTitle");
 const modalDesc = document.getElementById("modalDesc");
@@ -61,7 +58,6 @@ if (staticLogoutBtn) {
   });
 }
 
-// ----- Helpers -----
 function formatRelativeTime(isoString) {
   if (!isoString) return "";
   const d = new Date(isoString);
@@ -110,7 +106,6 @@ function sortItems(list, sortKey) {
   return arr;
 }
 
-// ----- Card / Modal -----
 function createResultCard(item) {
   const card = document.createElement("div");
   card.classList.add("result-card");
@@ -166,7 +161,6 @@ function renderResults(list) {
   });
 }
 
-// ----- Filter -----
 function filterItems(query) {
   const q = query.toLowerCase().trim();
 
@@ -192,7 +186,7 @@ function filterItems(query) {
   renderResults(filtered);
 }
 
-// ----- Load from Firestore -----
+// Loads posts from firestore
 async function loadPostsFromFirestore() {
   resultsInfo.textContent = "Loading posts...";
 
@@ -219,20 +213,17 @@ async function loadPostsFromFirestore() {
   }
 }
 
-// ----- Event wiring -----
 sortOptions.forEach((card) => {
   card.addEventListener("click", () => {
     const wasActive = card.classList.contains("active");
 
-    // If already active → unselect & reset sort
     if (wasActive) {
       card.classList.remove("active");
-      currentSort = "recent"; // default
+      currentSort = "recent";
       renderResults(allPosts);
       return;
     }
 
-    // Otherwise → activate this card
     sortOptions.forEach((c) => c.classList.remove("active"));
     card.classList.add("active");
 
@@ -241,7 +232,6 @@ sortOptions.forEach((card) => {
   });
 });
 
-// Modal close
 if (modalClose) {
   modalClose.addEventListener("click", () => {
     postModal.style.display = "none";
@@ -254,7 +244,6 @@ window.addEventListener("click", (e) => {
   }
 });
 
-// ----- Auth guard + initial load -----
 onAuthStateChanged(auth, (user) => {
   if (!user) {
     window.location.href = "login.html";

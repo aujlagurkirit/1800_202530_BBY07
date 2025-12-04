@@ -1,4 +1,4 @@
-// map.js — FULL VERSION WITH FIRESTORE PINS + ANTI-OVERLAP
+// map.js 
 import { Loader } from "https://cdn.jsdelivr.net/npm/@googlemaps/js-api-loader@1.16.2/+esm";
 import {
   getFirestore,
@@ -16,10 +16,9 @@ const loader = new Loader({
 });
 
 let map;
-let postMarkers = []; // store post markers separately
+let postMarkers = [];
 let googleObj;
 
-// BUILDING LOCATIONS (you provided)
 const buildingLocations = {
   sw01: {
     position: { lat: 49.25127479449927, lng: -123.0024951386435 },
@@ -55,7 +54,6 @@ const buildingLocations = {
   },
 };
 
-// Converts Firestore ISO date → “3h ago”
 function relativeTime(iso) {
   const d = new Date(iso);
   const diff = (Date.now() - d.getTime()) / 1000;
@@ -67,12 +65,11 @@ function relativeTime(iso) {
   return days === 1 ? "1 day ago" : `${days} days ago`;
 }
 
-// Spread markers in a circle so they don't overlap
 function offsetPosition(center, index, total) {
   if (total === 1) return center;
 
   const angle = (index / total) * Math.PI * 2;
-  const radius = 0.0001; // ~10m offset
+  const radius = 0.0001;
 
   return {
     lat: center.lat + radius * Math.cos(angle),
@@ -112,7 +109,6 @@ async function loadPostMarkers() {
     grouped[locKey].push(p);
   });
 
-  // Create markers for each location group
   for (const locKey in grouped) {
     const posts = grouped[locKey];
     const base = buildingLocations[locKey].position;
@@ -154,7 +150,6 @@ async function loadPostMarkers() {
       marker.addListener("click", () => {
         infoWindow.open({ map, anchor: marker });
 
-        // Google Maps directions prompt
         if (confirm(`Open Google Maps directions to ${post.location}?`)) {
           window.open(
             `https://www.google.com/maps/dir/?api=1&destination=${base.lat},${base.lng}`,
