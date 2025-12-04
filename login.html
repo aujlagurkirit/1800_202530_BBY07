@@ -1,40 +1,40 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Login - LostNFound</title>
-  <link rel="stylesheet" href="style.css" />
-</head>
-<body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Login - LostNFound</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
     <a href="index.html" class="back-home-link">Back to Home</a>
-  <div class="auth-container">
-    <h2>Login</h2>
-    <form id="login-form">
-      <label for="email">Email</label>
-      <input type="email" id="email" name="email" required />
-      
-      <label for="password">Password</label>
-      <input type="password" id="password" name="password" required />
-      
-      <button type="submit">Login</button>
-    </form>
+    <div class="auth-container">
+      <h2>Login</h2>
+      <form id="login-form">
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" required />
 
-    <div class="links">
-      <p>Don't have an account? <a href="signup.html">Sign up here</a></p>
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" required />
+
+        <button type="submit">Login</button>
+      </form>
+
+      <div class="links">
+        <p>Don't have an account? <a href="signup.html">Sign up here</a></p>
+      </div>
+
+      <h3>Forgot your password?</h3>
+      <form id="reset-password-form">
+        <label for="reset-email">Enter your email</label>
+        <input type="email" id="reset-email" name="reset-email" required />
+        <button type="submit">Reset Password</button>
+      </form>
+
+      <p id="reset-message"></p>
+      <p id="message"></p>
     </div>
 
-    <h3>Forgot your password?</h3>
-    <form id="reset-password-form">
-      <label for="reset-email">Enter your email</label>
-      <input type="email" id="reset-email" name="reset-email" required />
-      <button type="submit">Reset Password</button>
-    </form>
-
-    <p id="reset-message"></p>
-    <p id="message"></p>
-  </div>
-
-  <script type="module" src="src/main.js"></script>
-</body>
+    <script type="module" src="src/main.js"></script>
+  </body>
 </html>
